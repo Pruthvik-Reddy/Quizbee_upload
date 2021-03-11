@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
+import "../css/styles.css";
 import ReactPaginate from 'react-paginate';
 import Each_question from './Each_question';
 import axios from "axios";
@@ -415,6 +416,7 @@ if(testflag===1){
         <ReactPaginate
           previousLabel={'previous'}
           nextLabel={'next'}
+          breakClassName={"break-me"}
           breakLabel={'...'}
           pageCount={pagination.pageCount}
           marginPagesDisplayed={5}
