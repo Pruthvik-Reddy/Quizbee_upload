@@ -10,7 +10,8 @@ import {
   List,
   ListInput,
   ListItem,
-  f7
+  f7,
+  Card
 ,NavLeft,NavRight,NavTitle
 
 } from 'framework7-react';
@@ -360,13 +361,15 @@ if(testflag===1){
       <Page>
 
       <div>
+        <Card>
       <div>
-            <h1>Your Test Ends In</h1>
+            <div>Your Test Ends In</div>
         { minutes === 0 && seconds === 0
             ? null
-            : <h1>{hours<10? `0${hours}` : hours} :{minutes<10? `0${minutes}` : minutes}:{seconds < 10 ?  `0${seconds}` : seconds}</h1> 
+            : <div>{hours<10? `0${hours}` : hours} :{minutes<10? `0${minutes}` : minutes}:{seconds < 10 ?  `0${seconds}` : seconds}</div> 
         }
         </div>
+        </Card>
         
               {pagination.currentData && pagination.currentData.map(((item, index) => (
                 <div className="post">

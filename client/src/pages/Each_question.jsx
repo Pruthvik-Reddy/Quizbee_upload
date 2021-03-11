@@ -6,7 +6,9 @@ import {
   List,
   ListInput,
   Button,
-  ListItem
+  ListItem,
+  Card,
+  CardContent
 
 } from 'framework7-react';
 import { offset } from 'dom7';
@@ -64,7 +66,8 @@ function Each_question(props) {
     return (
         <div>
                 <div className="post">
-                  <h1>{props.question_description}</h1>
+                    <Card>
+                  {props.question_description}
                   <div class="list">
                     
                     <ul >
@@ -101,7 +104,7 @@ function Each_question(props) {
                     
                   </ul>
                   </div>
-                  
+                  </Card>
                 </div>
              
             
