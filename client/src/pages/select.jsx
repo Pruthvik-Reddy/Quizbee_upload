@@ -99,7 +99,7 @@ import {
                                      
 
                                      <NavLeft>
-                                       <Link onClick={Home}>Home</Link>
+                                       <Link onClick={Home}>QHire Quiz Application</Link>
                                      </NavLeft>
                                      <NavRight>
                                        <Link onClick={Sign_out}>SignOut</Link>
