@@ -313,9 +313,9 @@ return(
           </label>
         </th>
         <th class="label-cell">Questions</th>
-        <th class="numeric-cell">Options</th>
+        {/* <th class="numeric-cell">Options</th>
         
-        <th class="numeric-cell">Answer</th>
+        <th class="numeric-cell">Answer</th> */}
       </tr>
     </thead>
     <tbody>
@@ -346,8 +346,8 @@ return(
           
         </td>
         <td class="label-cell">{val.question_obj}</td>
-        <td class="numeric-cell">{val.options}</td>
-        <td class="numeric-cell">{val.answer}</td>
+        {/* <td class="numeric-cell">{val.options}</td>
+        <td class="numeric-cell">{val.answer}</td> */}
       </tr>
       
       ))}

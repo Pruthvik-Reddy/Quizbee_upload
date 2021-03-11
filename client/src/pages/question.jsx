@@ -507,7 +507,7 @@ export default function Questions(props) {
   
   
   
-        <div class="block-title">Question Description</div>
+        <div class="block-title" >Question Description</div>
         <div class="list no-hairlines-md">
           <ul>
             <li class="item-content item-input item-input-outline">
@@ -516,9 +516,10 @@ export default function Questions(props) {
               </div>
               <div class="item-inner">
                 <div class="item-title item-floating-label">Question Description</div>
-                <div class="item-input-wrap">
+                <div class="item-input-wrap" >
                   <input type="text" placeholder="Enter Question Description" 
                   value={question_description}
+            
           onChange={handleQuestionChange} />
                   <span class="input-clear-button"></span>
                 </div>
