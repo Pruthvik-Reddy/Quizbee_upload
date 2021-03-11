@@ -516,7 +516,7 @@ export default function Questions(props) {
               </div>
               <div class="item-inner">
                 <div class="item-title item-floating-label">Question Description</div>
-                <div class="item-input-wrap" >
+                <div class="item-input-wrap" style={{position:"relative",right:"5%"}} >
                   <input type="text" placeholder="Enter Question Description" 
                   value={question_description}
             
@@ -544,12 +544,14 @@ export default function Questions(props) {
                     placeholder="Enter the option"
                     value={x}
                     onChange={e => handleInputChange(e, i)}
-                    />
+                    />&nbsp;&nbsp;&nbsp;
                     
-                    {inputList.length !== 1 && <Button
+                    {inputList.length !== 1 &&
+                    
+                     <Button style={{width:"10%",display:"inline-block"}}
                         
                         onClick={() => handleRemoveClick(i)}>Remove</Button>}
-                    {inputList.length - 1 === i && <Button onClick={handleAddClick}>Add Option</Button>}
+                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"78%"}}>Add Option</Button>}
                     
                 </div>
                 );
