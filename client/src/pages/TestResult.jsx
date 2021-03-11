@@ -102,29 +102,40 @@ function TestResult(props) {
                   </Navbar>
 
                   <div>
-            <Card>
+                    <h1>Test Result</h1>
+            <center>            <Card style={{width:"56%",height:"420px",backgroundColor:"#f0f5f5"}}>
                 <CardContent>
-                <div  style={{ height: '500px',width:'1000px' }}>
-                    <Row style={{fontSize:"57px"}}>
+                <div >
+                    <Row style={{marginLeft:"43%",fontFamily:"Avenir Next",letterSpacing:"1px",fontSize:"34px"}}>
                     
-                 Test Name:{props.testresdata["test_name"]}
+                 {props.testresdata["test_name"]}
                  
                     </Row>
-                    <Row style={{fontSize:"57px"}}>
-                        Number of Questions:{props.testresdata["number_of_questions"]}
+                    <br />
+                    <br />
+                    <Row style={{marginLeft:"35%",fontSize:"24px"}} >
+                        Number of Questions : {props.testresdata["number_of_questions"]}
                     </Row>
-                    <Row style={{fontSize:"57px"}}>
-                        Number of Correct Answers:{props.testresdata["number_of_correct_answers"]}
+                    <br />
+                    <br />
+                    <Row style={{marginLeft:"35%",fontSize:"24px"}} >
+                        Number of Correct Answers : {props.testresdata["number_of_correct_answers"]}
                     </Row>
-                    <Row style={{fontSize:"57px"}}>
-                        Percentage:{props.testresdata["percent_scored"]}
+                    <br />
+                    <br />
+                    <Row style={{marginLeft:"35%",fontSize:"24px"}} >
+                        Percentage : {props.testresdata["percent_scored"].toFixed(2)}
                     </Row>
-                    <Row style={{fontSize:"57px"}}>
-                        Result:{props.testresdata["result"]}
+                    <br />
+                    <br />
+                    <Row  style={{marginLeft:"35%",fontSize:"24px"}}>
+                        Result : {props.testresdata["result"]}
                     </Row>
                     </div>
                 </CardContent>
             </Card>
+            </center>
+
             
         </div>
             </Page>

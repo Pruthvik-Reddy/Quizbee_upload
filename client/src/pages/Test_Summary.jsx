@@ -188,7 +188,7 @@ export default function Test_Summary() {
         {tests.length>0?
         tests.map((ele)=>{return(<tr>
             <td class="label-cell">{ele.TestName}</td>
-            <td class="numeric-cell">{ele.percent_scored}</td>
+            <td class="numeric-cell">{ele.percent_scored?ele.percent_scored.toFixed(2):"NA"}</td>
             <td class="numeric-cell">{ele.Result}</td>
             <td class="label-cell">{ele.Result==="Pass"?<Button onClick={(e)=>{myCertificateDownloadHandler(ele,e)}}>Download</Button>:<div></div>}</td>
             <td class="numeric-cell">{(ele.updatedAt).split('T')[0].split('-').reverse().join("-")}</td>
