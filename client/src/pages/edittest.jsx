@@ -170,6 +170,7 @@ const edittest = () => {
         axios.put(`http://localhost:4000/api/update-test/${edittest_id}`, data)
         .then(d => {
             console.log(d);
+            f7.dialog.alert('Updated!',"Update Notification");
         })
         .catch(err => alert(err))
 
