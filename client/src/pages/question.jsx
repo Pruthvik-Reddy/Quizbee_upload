@@ -377,7 +377,28 @@ export default function Questions(props) {
     var temp=<div>
       <p>Choose the Correct Answer for the given options</p>
     <form>
-    {inputList.map((ele)=><div><input type="checkbox" onChange={(e)=>handleCheckboxchange(ele,e)}></input><label>{ele}</label></div>)}
+    {inputList.map((ele)=>{
+        return <div class="List">
+          <Card>
+          <List>
+         <ListItem
+        checkbox
+        name="checkbox"
+        value={ele}
+        onChange={(e) => {
+          handleCheckboxchange(ele,e)
+          // props.correctoptionschildfunc(selectedoption);
+    
+        }}
+
+
+      >{ele}</ListItem></List></Card>
+      </div>
+
+      
+      })}
+      
+    {/* {inputList.map((ele)=>{return (<div class="List"><Card><List><ListItem><input type="checkbox" onChange={(e)=>handleCheckboxchange(ele,e)} ></input>{ele}</ListItem></List></Card></div>)})} */}
     
     </form>
     
