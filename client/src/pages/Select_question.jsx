@@ -190,8 +190,8 @@ const SelectQuestion = () => {
       }).catch(err=>{
         alert(err)
       })
-      f7.dialog.alert('Test created successfully');
-      window.location.href = '/created-test'
+      f7.dialog.alert('Test created successfully',"Test Created",()=>{window.location.href = '/created-test'});
+      //window.location.href = '/created-test'
     }
     const Your_test = () => {
       //f7.dialog.alert(' add question Page');
