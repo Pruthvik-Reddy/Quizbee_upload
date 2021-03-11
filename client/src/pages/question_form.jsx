@@ -151,7 +151,7 @@ const Question_form = ({f7,f7router}) => {
     ret_lis=<Page>
           
           <List >
-            <h1 style={{textAlign:'center'}}>Create your own questions</h1>
+            {/* <h1 style={{textAlign:'center'}}>Create your own questions</h1> */}
             <div style={{paddingTop:'1%',paddingLeft:'45%'}} >
             <Button className="col" style={{width:'20%'}} onClick= {e => {save(e)}}  fill>ADD QUESTION</Button>
             </div>
