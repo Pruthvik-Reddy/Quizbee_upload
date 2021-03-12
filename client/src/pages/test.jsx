@@ -46,7 +46,8 @@ const test = () => {
     const [sub_cat_arr,setSub_arr] = useState([""]);
     const [sub_cat_id,setSub_cat_id] = useState('')
     const sub_array = new Array();
-    sub_array.push('Include-All')
+    sub_array.push('Select');
+    sub_array.push('Include-All');
     const [flag,setFlag] = useState(0);
     let ret_lis=[];
     // for user or admin
@@ -284,6 +285,21 @@ const test = () => {
         else if(!iscertificate){
           f7.dialog.alert('Please select your certification either yes or no ');  
         }
+        else if(!mainCategory){
+          f7.dialog.alert('Please select your main category');  
+        }
+        else if(mainCategory === "Select"){
+          f7.dialog.alert('Please select your main category properly');  
+        }
+        else if(subCategory === "Select"){
+          f7.dialog.alert('Please select your Sub category properly');  
+        }
+
+        else if(!subCategory){
+          f7.dialog.alert('Please select your sub category');  
+        }
+
+
 
         else{
 
@@ -345,7 +361,7 @@ const test = () => {
                 alert(err)
               })
       
-              //window.location.href = '/select-question'
+              window.location.href = '/select-question'
       
             }
 
