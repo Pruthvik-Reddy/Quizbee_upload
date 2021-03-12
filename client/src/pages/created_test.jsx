@@ -183,13 +183,7 @@ return(
                     <Block strong>
                       <Row>
                         <Col>
-                          {/* <Button color="red">Red</Button> */}
-                        </Col>
-                        <Col>
-                          <Button fill color="blue" onClick={EditTest}>Edit Test</Button>
-                        </Col>
-                        <Col>
-                          {/* <Button color="blue">Blue</Button> */}
+                          <Button fill color="blue" onClick={EditTest} >Edit Test</Button>
                         </Col>
                       </Row>
                     </Block>

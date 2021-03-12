@@ -370,8 +370,9 @@ const edittest = () => {
               .then((d)=>{
                 console.log(d)
                 console.log('deleted successfully')
+                f7.dialog.alert('Deleted Successfully!',"Delete Notification",()=>{window.location.href='/edit-test'});
               })
-              window.location.href='/edit-test'
+              
             }
             return(
             <Card className="demo-card-header-pic">

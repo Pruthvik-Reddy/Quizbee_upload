@@ -98,7 +98,7 @@ const Userprofile = (props) => {
       console.log(data)
       postuser(data);
       clearState();
-      f7.dialog.alert('successfully created profile..')
+      f7.dialog.alert('successfully created profile', "Profile Notification", ()=>{window.location.href='/select'})
       //window.location.href = '/create-test'
       //setShowMessage(true);
     }  
