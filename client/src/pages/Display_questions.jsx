@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
+import "../css/styles.css";
 import ReactPaginate from 'react-paginate';
 import Each_question from './Each_question';
 import axios from "axios";
@@ -57,22 +58,21 @@ const [testresdata,setTestresdata]=useState({});
 
 
 
-    const test_mins=1;
+    const [test_mins,setTest_mins]=useState(1);
     var h = Math.floor(test_mins/ 60);
     var m = test_mins % 60;
     //console.log(h);
     //console.log(m);
-    const [hours,setHours]=useState(h);
-    const [ minutes, setMinutes ] = useState(m);
+    const [hours,setHours]=useState(1);
+    const [ minutes, setMinutes ] = useState(1);
     const [seconds, setSeconds ] =  useState(1);
     
+    const [timer_flag,setTimerflag]=useState(0);
     
 
-
-
-    useEffect(() => {
-
+    useEffect(()=>{
       if(question_ids.length ===0){
+        //console.log("ININININ")
       //console.log(question_ids.length);
       const test_id=JSON.parse(sessionStorage.getItem("stutest-id"));
       setTid(test_id)
@@ -81,10 +81,10 @@ const [testresdata,setTestresdata]=useState({});
       .then((d)=>{
       
           let test_data = d.data;
-          setTname(test_data.TestName)
-          setPercent(test_data.PassPercent)
+          setTname(test_data.TestName);
+          setPercent(test_data.PassPercent);
           
-          console.log("TESTTTTT DATA",test_data);
+         // console.log("TESTTTTT DATA",test_data);
          // console.log("TESTTTTT DATA",test_data);
           setQuestion_ids(test_data.Question_List)
           setPageconfig(test_data.PageConfig)
@@ -94,6 +94,8 @@ const [testresdata,setTestresdata]=useState({});
             axios.get(`http://localhost:4000/api/get-question/${ques_id}`).then((d)=>{
                 //console.log('questions list',d)
                 let full_questions = d.data;
+                console.log("FULL");
+                console.log(full_questions);
                 //console.log("QUESTIONS",full_questions)
                 for (var i=0, len=full_questions.length;i<len;i++){
                     let ques = {
@@ -143,6 +145,33 @@ const [testresdata,setTestresdata]=useState({});
       
       
     }
+    },[])
+
+    useEffect(() => {
+
+      if(timer_flag===0){
+        const test_id=JSON.parse(sessionStorage.getItem("stutest-id"));
+        setTid(test_id)
+
+      axios.get(`http://localhost:4000/api/get-test/${test_id}`)
+      .then((d)=>{
+        let test_data = d.data;
+          
+        setTest_mins(test_data.Duration);
+          //var h = Math.floor(test_mins/ 60);
+          //var m = test_mins % 60;
+          setHours(Math.floor((test_data.Duration)/ 60));
+          setMinutes((test_data.Duration )% 60);
+          setSeconds(1);
+          setTimerflag(1);
+          
+      })
+      
+
+      }
+
+
+     
     else{
       setPagination((prevState) => ({
         ...prevState,
@@ -387,6 +416,7 @@ if(testflag===1){
         <ReactPaginate
           previousLabel={'previous'}
           nextLabel={'next'}
+          breakClassName={"break-me"}
           breakLabel={'...'}
           pageCount={pagination.pageCount}
           marginPagesDisplayed={5}
