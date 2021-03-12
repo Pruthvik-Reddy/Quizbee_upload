@@ -169,7 +169,7 @@ const Certificate = (props) => {
                       <span style={{fontSize:"25px"}}><i>This is to certify that</i></span>
                       <br/><br/>
                       <span style={{fontSize:"30px"}}><b>Phani Kanala</b></span><br/><br/>
-                      <span style={{fontSize:"25px"}}><i>has completed the course</i></span> <br/><br/>
+                      <span style={{fontSize:"25px"}}><i>has passed the test</i></span> <br/><br/>
                       <span style={{fontSize:"30px"}}>{props.certificate_data["TestName"]}</span> <br/>
                       <span style={{fontSize:"20px"}}>with percentage of <b>{props.certificate_data["percent_scored"]}</b> on </span> <br/> 
                       <span style={{fontSize:"25px"}}><i>{props.certificate_data["updatedAt"].split('T')[0].split('-').reverse().join("-")}</i></span>
