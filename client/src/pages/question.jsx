@@ -440,8 +440,6 @@ export default function Questions(props) {
   }
   };
 
-
-
   var ret_lis;
   if (flag ==0)
   {
