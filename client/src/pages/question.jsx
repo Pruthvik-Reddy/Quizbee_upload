@@ -32,6 +32,8 @@ import {
 
 } from 'framework7-react';
 import firebase from 'firebase';
+import Switch from "react-switch";
+
 require('firebase/auth');
 import '../css/hover.css'
 
@@ -63,48 +65,13 @@ export default function Questions(props) {
    const [selected_sub_cats_2,setSelected_sub_cats_2]=useState([]);
    
    const [sub_Cat_key,setSub_cat_key]=useState(0);
+
+   const [toggle_options,setToggle_options]=useState([0]);
+
    const get_email=JSON.parse(localStorage.getItem("firebase_email"));
     useEffect(() => {
 
-    /*
-   var dat1=[{_id:"1",category_name:"Technical"},{_id:"2",category_name:"Aptitude"},{_id:"3",category_name:"Sports"}];
-   var sub_cate=[{id:"4",category_name:"OOPS",parent_category_id:"1"},{id:"5",category_name:"Logic",parent_category_id:"2"},{id:"6",category_name:"Cricket",parent_category_id:"3"}];
    
-   var parent_cat_names={};
-
-    setCat_lis(dat1.map(val=>{
-      parent_cat_names[val._id]=val.category_name;
-      return{
-          id: val._id,
-          category_name:val.category_name
-
-      }
-  }));
-
-        var temp={"":[]}
-        sub_cate.map((ele)=>{ 
-            
-          var sub_cat_name=ele.category_name;
-          var main_cat_name=parent_cat_names[ele.parent_category_id];
-          if (main_cat_name in temp){
-            var temp2=temp[main_cat_name];
-            console.log(sub_cat_name);
-            temp2.push(sub_cat_name);
-            temp[main_cat_name]=temp2;
-          } 
-          else{
-            console.log(main_cat_name);
-            console.log(sub_cat_name);
-            temp[main_cat_name]=[sub_cat_name];
-            console.log(temp);
-          }
-
-        })
-        console.log(temp);
-        setSub_cat_lis(temp);
-
-
-*/
     var parent_cat_names={};
 
     axios.get('http://localhost:4000/api/get-main-categories').then(
@@ -163,7 +130,11 @@ export default function Questions(props) {
   }, [])
 
 
+useEffect(() => {
 
+    console.log("use Effect");
+    console.log(toggle_options)
+}, [toggle_options])
   
   
   const sub_cat_change=(e)=>{
@@ -272,15 +243,21 @@ export default function Questions(props) {
   // handle click event of the Remove button
   const handleRemoveClick = index => {
     const list = [...inputList];
+    const toggle_lis=toggle_options;
     list.splice(index, 1);
+    toggle_lis.splice(index,1);
     //props.optionchildfunc(list);
     setInputList(list);
+    setToggle_options(toggle_lis);
     
   };
 
   // handle click event of the Add button
   const handleAddClick = () => {
     setInputList([...inputList, "" ]);
+    const toggle_lis=toggle_options;
+    toggle_lis.push(0);
+    setToggle_options(toggle_lis);
   };
 
 
@@ -290,6 +267,55 @@ export default function Questions(props) {
     setSelectedoption([]);
   }
 
+
+
+  const toggleoptionfield=(i,element)=>{
+    const toggle_lis = [...toggle_options.map(val => val)];
+    console.log("YYY");
+    console.log(toggle_lis);
+      if(toggle_lis[i]==1){
+        if(questiontype==="Checkbox"){
+          toggle_lis[i]=0;
+          var sel_options=selectedoption;
+          var index = sel_options.indexOf(element);
+          if (index !== -1) {
+          sel_options.splice(index, 1);
+          }
+          setSelectedoption(sel_options);
+        setToggle_options(toggle_lis);
+        }
+        else if(questiontype==="Multiple Choice Questions"){
+          var tog_lis=toggle_lis.map((ele)=>0);
+          
+          setToggle_options(tog_lis);
+          
+          setSelectedoption([]);
+          
+        }
+        
+      }
+      else{
+        if(questiontype==="Checkbox"){
+          toggle_lis[i]=1;
+           var sel_options=selectedoption;
+           if(!sel_options.includes(element)){
+             sel_options.push(element);
+             setSelectedoption(sel_options);
+           }
+           setToggle_options(toggle_lis);
+          
+        }
+        else if(questiontype==="Multiple Choice Questions"){
+          var tog_lis=toggle_lis.map((ele)=>0);
+          tog_lis[i]=1;
+          var temp=[element];
+          setSelectedoption(temp);
+          setToggle_options(tog_lis);
+        }
+      }
+      
+      
+  }
 
   const myQuestionSubmitfunc=()=>{
     axios.get(`http://localhost:4000/route/get-user-id/${get_email}`).then(data12=>{
@@ -566,6 +592,7 @@ export default function Questions(props) {
                     onChange={e => handleInputChange(e, i)}
                     />&nbsp;&nbsp;&nbsp;
                     {/* <div className="tooltip">  */}
+                    <Switch  onChange={()=>toggleoptionfield(i,inputList[i])} checked={toggle_options[i]===0?false:true} />
                     {inputList.length !== 1 &&
                     
                      <Button style={{width:"10%",display:"inline-block"}}
