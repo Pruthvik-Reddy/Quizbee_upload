@@ -147,27 +147,13 @@ const Question_form = ({f7,f7router}) => {
  
   var ret_lis;
   
-  if(flag==0){
-    ret_lis=<Page>
-          
-          <List >
-            {/* <h1 style={{textAlign:'center'}}>Create your own questions</h1> */}
-            <div style={{paddingTop:'1%',paddingLeft:'45%'}} >
-            <Button className="col" style={{width:'20%'}} onClick= {e => {save(e)}}  fill>ADD QUESTION</Button>
-            </div>
-            
-          </List>
-  </Page>
-  }
-  else 
-  {
     ret_lis=<Page><div><Questions key={instanceKey}  questionchildfunc={questionchildfunc} optionchildfunc={optionchildfunc}
                  categorychildfunction={categorychildfunction}  Sub_categorychildfunc={Sub_categorychildfunc}
                  correctoptionschildfunc={correctoptionschildfunc} questiontypechildfunc={questiontypechildfunc}
-                 flagchildfunc={flagchildfunc} instancechildfunc={instancechildfunc} />
+                  instancechildfunc={instancechildfunc} />
  
     <Button className="col" onClick= {myQuestionSubmitfunc} ></Button></div></Page>
-  }
+  
   let session = (JSON.parse(localStorage.getItem("firebase_email")))
   if(session){
 

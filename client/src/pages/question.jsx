@@ -39,17 +39,14 @@ import '../css/hover.css'
 
 export default function Questions(props) {
 
-   const [inputList, setInputList] = useState([""]);
+   const [inputList, setInputList] = useState(["","","",""]);
    const [question_description,setQuestion_description]=useState("");
 
    const [questiontype,setQuestiontype]=useState("Multiple Choice Questions");
 
    const [selectedoption,setSelectedoption]=useState([]);
-   const [correct_answer_component,setCorrect_answer_component]=useState([]);
+   
 
-
-   const [flag,setFlag]=useState(0);
-   const [choosingcorrectanswers_flag,setChoosingcorrectanswers_flag]=useState(0);
    
 
    const [category,setCategory]=useState("");
@@ -66,7 +63,7 @@ export default function Questions(props) {
    
    const [sub_Cat_key,setSub_cat_key]=useState(0);
 
-   const [toggle_options,setToggle_options]=useState([0]);
+   const [toggle_options,setToggle_options]=useState([0,0,0,0]);
 
    const get_email=JSON.parse(localStorage.getItem("firebase_email"));
     useEffect(() => {
@@ -159,44 +156,7 @@ useEffect(() => {
     setSelected_sub_cats_2(sub_category_data);
   }
 
-   const handleCheckboxchange=(ele,e)=>{
-    if(choosingcorrectanswers_flag==1){
-          setChoosingcorrectanswers_flag(0);
-          var temp=[];
-        if (e.target.checked){
-          temp.push(ele);
-          setSelectedoption(temp);
-        }
-        else{
-          var temp=selectedoption;
-          const index = temp.indexOf(ele);
-          if (index > -1) {
-            temp.splice(index, 1);
-          }
-          setSelectedoption(temp);
-        }
-
-        //props.correctoptionschildfunc(selectedoption);
-    }
-    else{
-            var temp=selectedoption;
-            if (e.target.checked){
-              temp.push(ele);
-              setSelectedoption(temp);
-            }
-            else{
-              var temp=selectedoption;
-              const index = temp.indexOf(ele);
-              if (index > -1) {
-                temp.splice(index, 1);
-              }
-              setSelectedoption(temp);
-            }
-
-            //props.correctoptionschildfunc(selectedoption);
-        }
-
-    }
+  
 
 
    const onChangeCategory=(e)=>{
@@ -215,7 +175,13 @@ useEffect(() => {
    }
 
    const onChangeQuestiontype=(e)=>{
+    
     setQuestiontype(e.target.value);
+    const toggle_lis = [...toggle_options.map(val => val)];
+    var tog_lis=toggle_lis.map((ele)=>0);
+    setToggle_options(tog_lis);
+    setSelectedoption([]);
+   
    // props.questiontypechildfunc(e.target.value);
   }
 
@@ -244,6 +210,13 @@ useEffect(() => {
   const handleRemoveClick = index => {
     const list = [...inputList];
     const toggle_lis=toggle_options;
+    const sel_options=selectedoption;
+    if(sel_options.includes(list[index])){
+      var ind = sel_options.indexOf(list[index]);
+      if (ind !== -1) {
+        sel_options.splice(ind, 1);
+        }
+    }
     list.splice(index, 1);
     toggle_lis.splice(index,1);
     //props.optionchildfunc(list);
@@ -261,11 +234,7 @@ useEffect(() => {
   };
 
 
-  const onGobacktoQuestion=()=>{
-    setFlag(0);
-    setChoosingcorrectanswers_flag(0);
-    setSelectedoption([]);
-  }
+  
 
 
 
@@ -282,6 +251,7 @@ useEffect(() => {
           sel_options.splice(index, 1);
           }
           setSelectedoption(sel_options);
+          console.log(sel_options);
         setToggle_options(toggle_lis);
         }
         else if(questiontype==="Multiple Choice Questions"){
@@ -301,6 +271,7 @@ useEffect(() => {
            if(!sel_options.includes(element)){
              sel_options.push(element);
              setSelectedoption(sel_options);
+             console.log(sel_options);
            }
            setToggle_options(toggle_lis);
           
@@ -318,6 +289,29 @@ useEffect(() => {
   }
 
   const myQuestionSubmitfunc=()=>{
+    if(!category){
+      f7.dialog.alert('Please select category ');  
+    }
+
+    else if(!selected_sub_cats_2){
+      f7.dialog.alert('Please select sub category ');  
+    }
+    else if(!questiontype){
+      f7.dialog.alert('Please select question type');  
+    }
+    else if(!question_description){
+      f7.dialog.alert('Please enter question ');  
+    }
+    
+    else if(!inputList){
+      f7.dialog.alert('Please add options ');  
+
+    }
+    else if(inputList.includes("")){ 
+      f7.dialog.alert("Options should not be Empty")
+
+    }
+    else{
     axios.get(`http://localhost:4000/route/get-user-id/${get_email}`).then(data12=>{
       console.log(data12.data)
       const current_user_id = data12.data; 
@@ -362,116 +356,21 @@ useEffect(() => {
         alert(err)
     })
     //end
-    props.flagchildfunc();
+    
   })
 
+  f7.dialog.alert('Question Added Successfully',"Question Add Notification",()=>{window.location.href='/select'});
+    
 
-
-
+    }
+    
 
   }
 
 
-  const answerFeedback=()=>{
+ 
 
-
-    if(!category){
-      f7.dialog.alert('Please select category ');  
-    }
-
-    else if(!selected_sub_cats_2){
-      f7.dialog.alert('Please select sub category ');  
-    }
-    else if(!questiontype){
-      f7.dialog.alert('Please select question type');  
-    }
-    else if(!question_description){
-      f7.dialog.alert('Please enter question ');  
-    }
-    
-    else if(!inputList){
-      f7.dialog.alert('Please add options ');  
-
-    }
-    else{
-
-
-
-    setChoosingcorrectanswers_flag(1);
-    var temp=[];
-    
-    if(questiontype=="Checkbox"){
-    var temp=<div>
-      <p>Choose the Correct Answer for the given options</p>
-    <form>
-    {inputList.map((ele)=>{
-        return <div class="List">
-          <Card>
-          <List>
-         <ListItem
-        checkbox
-        name="checkbox"
-        value={ele}
-        onChange={(e) => {
-          handleCheckboxchange(ele,e)
-          // props.correctoptionschildfunc(selectedoption);
-    
-        }}
-
-
-      >{ele}</ListItem></List></Card>
-      </div>
-
-      
-      })}
-      
-    {/* {inputList.map((ele)=>{return (<div class="List"><Card><List><ListItem><input type="checkbox" onChange={(e)=>handleCheckboxchange(ele,e)} ></input>{ele}</ListItem></List></Card></div>)})} */}
-    
-    </form>
-    
-    </div>
-    }
-    else{
-      var temp=<div>
-        <p>Choose the Correct Answer for the given options</p>
-      <form>
-      {inputList.map((ele)=>{
-        return <div class="List">
-          <Card>
-          <List>
-         <ListItem
-        radio
-        name="radio"
-        value={ele}
-        onClick={() => {
-          var temp=[ele];
-          setSelectedoption(temp);
-         // props.correctoptionschildfunc(selectedoption);
-    
-        }}
-
-      >{ele}</ListItem></List></Card>
-      </div>
-
-      
-      })}
-      </form>
-      
-      </div>
-        
-    }
-    setCorrect_answer_component([temp]);
-    setSub_cat_key(prevkey=>prevkey+1);
-    setFlag(1);
-
-  }
-  };
-
-  var ret_lis;
-  if (flag ==0)
-  {
-    //setSelectedoption([]);
-    return (<div>
+  return (<div>
     <h1>Create Question</h1>
       
     
@@ -574,8 +473,7 @@ useEffect(() => {
           </ul>
           </div>
           
-  
-      <div class="block-title">Enter Options</div>
+      <table class="block-title" style={{width:"19%"}}><tr><td >Enter Options</td><td>Correct ?</td></tr></table>
       <div className="App">
             {inputList.map((x, i) => {
                 return (
@@ -595,13 +493,13 @@ useEffect(() => {
                     <Switch  onChange={()=>toggleoptionfield(i,inputList[i])} checked={toggle_options[i]===0?false:true} />
                     {inputList.length !== 1 &&
                     
-                     <Button style={{width:"10%",display:"inline-block"}}
+                     <Button style={{width:"10%",display:"inline-block",marginTop:"-20px"}}
                         
                         onClick={() => handleRemoveClick(i)}><Icon f7="bin_xmark" size="35px" color="blue" ></Icon></Button>}
                         
                     {/* </div> */}
                     
-                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"78%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
+                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"75%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
                     
                 </div>
                 );
@@ -609,7 +507,8 @@ useEffect(() => {
             
         </div>
   
-        <Button onClick={answerFeedback}>Choose the Correct Answer</Button>
+        <Button onClick={myQuestionSubmitfunc} >Save the Question </Button>
+    
 </div>
 
 :<div>Please Choose A Category</div>}
@@ -621,16 +520,7 @@ useEffect(() => {
 
       </div>)
 
-  }
-  else{
-
-    return(
-    <div>
-    {correct_answer_component}
-    <Button onClick={myQuestionSubmitfunc} >Save the Question </Button>
-    <Button onClick={onGobacktoQuestion}>Go Back to the Question</Button>
-    </div>);
-  }
+  
       
    
   
