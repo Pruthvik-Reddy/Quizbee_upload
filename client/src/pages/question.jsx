@@ -3,6 +3,7 @@ import { useState,useEffect,useRef } from 'react';
 import axios from "axios";
 import { 
   Page,
+  Icon,
   List,
   ListInput,
   Button,
@@ -32,7 +33,7 @@ import {
 } from 'framework7-react';
 import firebase from 'firebase';
 require('firebase/auth');
-
+import '../css/hover.css'
 
 export default function Questions(props) {
 
@@ -564,13 +565,16 @@ export default function Questions(props) {
                     value={x}
                     onChange={e => handleInputChange(e, i)}
                     />&nbsp;&nbsp;&nbsp;
-                    
+                    {/* <div className="tooltip">  */}
                     {inputList.length !== 1 &&
                     
                      <Button style={{width:"10%",display:"inline-block"}}
                         
-                        onClick={() => handleRemoveClick(i)}>Remove</Button>}
-                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"78%"}}>Add Option</Button>}
+                        onClick={() => handleRemoveClick(i)}><Icon f7="bin_xmark" size="35px" color="blue" ></Icon></Button>}
+                        
+                    {/* </div> */}
+                    
+                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"78%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
                     
                 </div>
                 );
