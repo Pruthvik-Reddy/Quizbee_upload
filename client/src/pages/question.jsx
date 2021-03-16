@@ -46,6 +46,7 @@ export default function Questions(props) {
 
    const [selectedoption,setSelectedoption]=useState([]);
    
+   const [difficulty_level,setDifficultylevel]=useState("easy");
 
    
 
@@ -185,6 +186,9 @@ useEffect(() => {
    // props.questiontypechildfunc(e.target.value);
   }
 
+  const onChangedifficultylevel=(e)=>{
+    setDifficultylevel(e.target.value);
+    }
    
   
    const removeTag = (i) => {
@@ -332,10 +336,11 @@ useEffect(() => {
     let created_by = current_user_id
     let answers = inputList
     let correct_answers = selectedoption
-    let difficulty_level = "easy"
+    let difficulty = difficulty_level;
     let answer_type = questiontype
 
-
+      console.log("difficulty");
+      console.log(difficulty);
 
 
     let data = {
@@ -343,7 +348,7 @@ useEffect(() => {
         sub_categories,
         question,
         created_by,
-        answers, correct_answers,difficulty_level,answer_type
+        answers, correct_answers,difficulty,answer_type
 
 
     }
@@ -450,6 +455,26 @@ useEffect(() => {
       </ul>
   </div>
   
+  <div class="list">
+    <ul>
+      <li>
+        <a class="item-link smart-select" data-open-in="popup">
+          <select name="difficulty_level" onChange={onChangedifficultylevel} value={difficulty_level}>
+          <option value="easy" selected>easy</option>
+              <option value="moderate">moderate</option>
+              <option value="difficult">difficult</option>
+              
+            </select>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title">SELECT QUESTION DIFFICULTY</div>
+              </div>
+          </div>
+        </a>
+      </li>
+      </ul>
+  </div>
+  
   
   
         <div class="block-title" >Question Description</div>
@@ -499,7 +524,7 @@ useEffect(() => {
                         
                     {/* </div> */}
                     
-                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"75%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
+                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"86%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
                     
                 </div>
                 );

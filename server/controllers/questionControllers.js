@@ -35,7 +35,7 @@ exports.createQuestion =  (req,res) =>{
         let new_question = new Question({
             question_description: req.body.question,
             answer_type:req.body.answer_type,
-            difficulty_level:req.body.difficulty_level,
+            difficulty_level:req.body.difficulty,
             created_by:req.body.created_by,
             answers:req.body.answers,
             correct_answers:req.body.correct_answers,
