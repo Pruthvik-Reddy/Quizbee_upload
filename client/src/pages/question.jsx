@@ -315,6 +315,9 @@ useEffect(() => {
       f7.dialog.alert("Options should not be Empty")
 
     }
+    else if(selectedoption.length===0){
+      f7.dialog.alert("Choose the correct option");
+    }
     else{
     axios.get(`http://localhost:4000/route/get-user-id/${get_email}`).then(data12=>{
       console.log(data12.data)
