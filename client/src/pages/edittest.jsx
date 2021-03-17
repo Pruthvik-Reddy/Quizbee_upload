@@ -23,6 +23,7 @@ import {
 } from 'framework7-react';
 import firebase from 'firebase';
 import SelectQuestion from './Select_question';
+// import ModalComponent from 'framework7/types/components/modal/modal';
 require('firebase/auth');
 
 
@@ -277,8 +278,16 @@ const edittest = () => {
         type="date"
         name="Validity_date"
         info="Default validation"
+        id="calendar-disabled"
         required
         validate
+        // disabled= 
+        //   {
+        //     from= new Date().setDate(today.getDate()),
+        //     to= new Date().setDate(today.getDate() - 49),
+        //   }
+        
+        // minDate ={moment().toDate()} 
         value={date}
         onChange={e => setDate(e.target.value)}
         //clearButton
