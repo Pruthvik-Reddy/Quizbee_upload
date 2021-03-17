@@ -386,7 +386,7 @@ if(testflag===1){
   
   if(count_flag===1){
     // console.log(pagination.currentData,"qwertyuio")
-    
+   
       history.pushState(null, null, location.href);
       window.onpopstate = function(event) {
         history.go(1);
