@@ -36,6 +36,16 @@ const test = () => {
     const [date, setDate] = useState('');
     const [duration, setDuration] = useState('');
 
+
+    const [error_duration,seterror_duration]=useState("");
+    const [error_pageconfig,seterror_pageconfig]=useState("");
+    const [error_passpercent,seterror_passpercent]=useState("");
+
+    const [error_duration_flag,seterror_duration_flag]=useState(0);
+    const [error_pageconfig_flag,seterror_pageconfig_flag]=useState(0);
+    const [error_passpercentflag,seterror_passpercent_flag]=useState(0);
+
+
     const [mainCategory, setMainCategory] = useState('');
     const [subCategory, setSubCategory] = useState('');
     const [difficulty, setDifficulty] = useState('');
@@ -269,6 +279,9 @@ const test = () => {
         if(!test_name){
           f7.dialog.alert('Please enter your testname');  
         }
+        else if(error_duration!=="" || error_pageconfig!=="" || error_passpercent!=="" ){
+          f7.dialog.alert("One or more of your input values is causing an error","Error Creating Test")
+        }
         else if(!passPercent){
           f7.dialog.alert('Please enter your pass percentage properly');  
         }
@@ -453,6 +466,49 @@ const test = () => {
       }
 
 
+      const pageconfigErrorHandler=()=>{
+        //console.log(typeof pageconfig)
+        if(pageconfig<=0 || (isNaN(pageconfig))){
+        seterror_pageconfig("Number of Questions in a Page cannot be Zero or Negative")
+        }
+        else{
+          seterror_pageconfig("")
+        }
+  
+      }
+  
+  
+      const passpercentageErrorHandler=()=>{
+        console.log(passPercent)
+        if((passPercent<1) || (passPercent>100) || (isNaN(passPercent))){
+        seterror_passpercent("Invalid Pass Percentage")
+        }
+        else{
+          seterror_passpercent("")
+        }
+  
+      }
+  
+  
+      const durationErrorHandler=()=>{
+        
+        if(isNaN(duration)){
+          seterror_duration("Invalid Duration")
+        }
+        else if(duration<=0){
+          seterror_duration("Duration cannot be Zero or Negative")
+        }
+        else{
+          seterror_duration("");
+        }
+      };
+
+      useEffect(() => {
+        pageconfigErrorHandler();
+        passpercentageErrorHandler();
+        durationErrorHandler();
+      }, [pageconfig,passPercent,duration])
+  
       
 
 let session = (JSON.parse(localStorage.getItem("firebase_email")))
@@ -668,6 +724,8 @@ if(session){
 
           <LoginScreenTitle>Create Test</LoginScreenTitle>
           <List form>
+
+            <ListItem>
             <ListInput
               label="Test Name"
               type="text"
@@ -678,6 +736,9 @@ if(session){
                 setTestName(e.target.value);
               }}
             />
+            </ListItem>
+
+            <ListItem>
             <ListInput
               label="Pass Percent"
               type="number"
@@ -688,8 +749,14 @@ if(session){
                 setPassPercent(e.target.value);
               }}
             />
+             <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          
+          {error_passpercent?error_passpercent:""}</div>
+         
+            </ListItem>
           {/* <React.Fragment>
             <div> */}
+          <ListItem>
           <ListInput
             label="Is certifiable ?"
             type="select"
@@ -700,9 +767,10 @@ if(session){
                 <option>NO</option> 
                 
             </ListInput>
+            </ListItem>
             {/* </div>
             </React.Fragment>       */}
-
+          <ListItem>
           <ListInput
               label="Page config"
               type="number"
@@ -713,6 +781,15 @@ if(session){
                 setPageConfig(e.target.value);
               }}
             />
+            <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          {error_pageconfig?error_pageconfig:""}
+          
+        </div>
+        
+            </ListItem>
+
+
+            <ListItem>
             <ListInput
             label="Validity Date"
             type="date"
@@ -724,6 +801,10 @@ if(session){
             onChange={e => setDate(e.target.value)}
             //clearButton
             />
+            </ListItem>
+
+
+            <ListItem>
           <ListInput
               label="Duration in minutes"
               type="number"
@@ -734,6 +815,12 @@ if(session){
                 setDuration(e.target.value);
               }}
             />
+            <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}} >
+        
+        {error_duration?error_duration:""}
+        </div>
+        
+            </ListItem>
             {/* <React.Fragment>
             
             <div>  */}
@@ -741,6 +828,7 @@ if(session){
                * This method will trigger every time different 
                * option is selected. 
                */}
+          <ListItem>
           <ListInput
             label="Main Category"
             type="select"
@@ -748,8 +836,11 @@ if(session){
             onInput={changeSelectOptionHandler}> 
               { main_options }
             </ListInput>
+            </ListItem>
             {/* </div> 
             <div>  */}
+
+            <ListItem>
             <ListInput
             label="Sub Category"
             type="select"
@@ -757,11 +848,12 @@ if(session){
             onInput = {changeSelect_2_OptionHandler}>
               { sub_options }
             </ListInput>
+            </ListItem>
             {/* </div> 
             
             </React.Fragment> */}
 
-
+            <ListItem>
           <ListInput
             label="Difficulty"
             type="select"
@@ -776,6 +868,7 @@ if(session){
         
             
             </ListInput>
+            </ListItem>
 
           {/* <ListInput
               label="Page config"

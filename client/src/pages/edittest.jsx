@@ -29,17 +29,62 @@ require('firebase/auth');
 
 const edittest = () => {
     const [test_name, setTestName] = useState('');
-    const [passPercent, setPassPercent] = useState('');
+    const [passPercent, setPassPercent] = useState();
     const [iscertificate, setIsCertificate] = useState('');
-    const [pageconfig, setPageConfig] = useState('');
+    const [pageconfig, setPageConfig] = useState();
     const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
+    const [duration, setDuration] = useState();
+
+
+    const [error_duration,seterror_duration]=useState("");
+    const [error_pageconfig,seterror_pageconfig]=useState("");
+    const [error_passpercent,seterror_passpercent]=useState("");
 
 
     const [questionarray,setQuestionArray] = useState([""]);
     const [finalquestions, setFinalQuestions] = useState([""])
     let arr = new Array();
     let edittest_id=JSON.parse(sessionStorage.getItem("edittest-id"));
+
+
+
+    const pageconfigErrorHandler=()=>{
+      //console.log(typeof pageconfig)
+      if(pageconfig<=0 || (isNaN(pageconfig))){
+      seterror_pageconfig("Number of Questions in a Page cannot be Zero or Negative")
+      }
+      else{
+        seterror_pageconfig("")
+      }
+
+    }
+
+
+    const passpercentageErrorHandler=()=>{
+      console.log(passPercent)
+      if((passPercent<1) || (passPercent>100) || (isNaN(passPercent))){
+      seterror_passpercent("Invalid Pass Percentage")
+      }
+      else{
+        seterror_passpercent("")
+      }
+
+    }
+
+
+    const durationErrorHandler=()=>{
+      
+      if(isNaN(duration)){
+        seterror_duration("Invalid Duration")
+      }
+      else if(duration<=0){
+        seterror_duration("Duration cannot be Zero or Negative")
+      }
+      else{
+        seterror_duration("");
+      }
+    };
+
     
     useEffect(() => {
       
@@ -119,6 +164,15 @@ const edittest = () => {
 
     }, [])
     
+
+
+    useEffect(() => {
+      pageconfigErrorHandler();
+      passpercentageErrorHandler();
+      durationErrorHandler();
+    }, [pageconfig,passPercent,duration])
+
+
     const changecertifiable = (event) =>{
         setIsCertificate(event.target.value);
       }
@@ -157,6 +211,11 @@ const edittest = () => {
         setFinalQuestions(questionarray);
       }
       const Update = () => {
+
+        if(error_duration!=="" || error_pageconfig!=="" || error_passpercent!=="" ){
+          f7.dialog.alert("One or more of your input values is causing an error","Error Updating")
+        }
+        else{
         console.log('update test id', edittest_id)
         let TestName = test_name;
         let PassPercent = passPercent;
@@ -171,10 +230,11 @@ const edittest = () => {
         axios.put(`http://localhost:4000/api/update-test/${edittest_id}`, data)
         .then(d => {
             console.log(d);
-            f7.dialog.alert('Updated!',"Update Notification");
+            f7.dialog.alert('Updated!',"Update Notification",()=>{window.location.href='/created-test'});
         })
         .catch(err => alert(err))
 
+      }
       }
       //console.log('final questions',finalquestions)
       
@@ -227,6 +287,7 @@ const edittest = () => {
             
             <LoginScreenTitle>Edit Test</LoginScreenTitle>
       <List form>
+        <ListItem>
         <ListInput
           label="Test Name"
           type="text"
@@ -234,10 +295,10 @@ const edittest = () => {
           placeholder="Test Name"
           value={test_name}
           readonly
-        //   onInput={(e) => {
-        //     setTestName(e.target.value);
-        //   }}
         />
+        </ListItem>
+        
+        <ListItem >
         <ListInput
           label="Pass Percent"
           type="number"
@@ -245,11 +306,16 @@ const edittest = () => {
           placeholder="Pass Percent"
           value={passPercent}
           onInput={(e) => {
-            setPassPercent(e.target.value);
+            setPassPercent(parseInt(e.target.value));
           }}
         />
-      
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          
+        {error_passpercent?error_passpercent:""}</div>
+        </ListItem>
         
+      
+      <ListItem>
       <ListInput
         label="Is certifiable ?"
         type="select"
@@ -260,9 +326,10 @@ const edittest = () => {
             <option>NO</option> 
             
         </ListInput>
+        </ListItem>
         
              
-
+          <ListItem>
       <ListInput
           label="Page config"
           type="number"
@@ -270,9 +337,17 @@ const edittest = () => {
           placeholder="Number of questions per page.."
           value={pageconfig}
           onInput={(e) => {
-            setPageConfig(e.target.value);
-          }}
+            setPageConfig(parseInt(e.target.value));
+            }}
+         
         />
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          {error_pageconfig?error_pageconfig:""}
+          
+        </div>
+        </ListItem>
+
+        <ListItem>
         <ListInput
         label="Validity Date"
         type="date"
@@ -292,16 +367,25 @@ const edittest = () => {
         onChange={e => setDate(e.target.value)}
         //clearButton
         />
-      <ListInput
+        </ListItem>
+
+
+        <ListItem>      <ListInput
           label="Duration in minutes"
           type="number"
           name = "Duration"
           placeholder="Duration in minutes"
           value={duration}
           onInput={(e) => {
-            setDuration(e.target.value);
+            setDuration(parseInt(e.target.value));
           }}
         />
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+        
+        {error_duration?error_duration:""}
+        </div>
+        </ListItem>
+
         {/* <React.Fragment>
         
         <div>  */}
