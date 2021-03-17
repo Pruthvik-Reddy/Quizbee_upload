@@ -297,7 +297,7 @@ useEffect(() => {
       f7.dialog.alert('Please select category ');  
     }
 
-    else if(!selected_sub_cats_2){
+    else if(selected_sub_cats_2.length===0){
       f7.dialog.alert('Please select sub category ');  
     }
     else if(!questiontype){
