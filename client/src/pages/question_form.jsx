@@ -40,7 +40,7 @@ const Question_form = ({f7,f7router}) => {
   const [instanceKey, setInstanceKey] = useState(0);
   
   
- 
+ /*
   const questionchildfunc=(question_data)=>{
     setEach_question_description(question_data);
   }
@@ -67,7 +67,7 @@ const Question_form = ({f7,f7router}) => {
   const questiontypechildfunc=(questiontypedata)=>{
     setQuestion_type(questiontypedata);
   }
- 
+ */
   const flagchildfunc=()=>{
     setFlag(0?1:0);
   }
@@ -76,7 +76,8 @@ const Question_form = ({f7,f7router}) => {
     setInstanceKey(prevkey=>prevkey+1);
   }
  
- 
+  
+ /*
   const myQuestionSubmitfunc=()=>{
     console.log(each_question_description);
     console.log(each_question_options);
@@ -87,7 +88,7 @@ const Question_form = ({f7,f7router}) => {
     setInstanceKey((i) => i + 1)
     setFlag(0);
     }
-
+*/
          const Sign_out = () => {
         firebase.auth().signOut().then(() => {
           // Sign-out successful.
@@ -121,12 +122,13 @@ const Question_form = ({f7,f7router}) => {
  
   
   
-  
+  /*
   const save =(e)=>{
     e.preventDefault();
     let data=[];
     postquestion(data);
   }
+  */
    const postquestion = data =>{
      setFlag(1);
     /*
@@ -147,12 +149,9 @@ const Question_form = ({f7,f7router}) => {
  
   var ret_lis;
   
-    ret_lis=<Page><div><Questions key={instanceKey}  questionchildfunc={questionchildfunc} optionchildfunc={optionchildfunc}
-                 categorychildfunction={categorychildfunction}  Sub_categorychildfunc={Sub_categorychildfunc}
-                 correctoptionschildfunc={correctoptionschildfunc} questiontypechildfunc={questiontypechildfunc}
-                  instancechildfunc={instancechildfunc} />
- 
-    <Button className="col" onClick= {myQuestionSubmitfunc} ></Button></div></Page>
+    ret_lis=<Page><div><Questions key={instanceKey}   />
+                  </div>
+            </Page>
   
   let session = (JSON.parse(localStorage.getItem("firebase_email")))
   if(session){
