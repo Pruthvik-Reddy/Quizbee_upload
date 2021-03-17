@@ -292,6 +292,16 @@ useEffect(() => {
       
   }
 
+
+  function checkwhitespaces(arr){
+    for(var i=0;i<arr.length;i++){
+      if(!str || !str.trim()){
+        return false
+      }
+    }
+    return true
+  }
+
   const myQuestionSubmitfunc=()=>{
     if(!category){
       f7.dialog.alert('Please select category ');  
@@ -313,6 +323,10 @@ useEffect(() => {
     }
     else if(inputList.includes("")){ 
       f7.dialog.alert("Options should not be Empty")
+
+    }
+    else if(!checkwhitespaces(inputList)){
+      f7.dialog.alert("Options cannot have blank spaces only")
 
     }
     else if(selectedoption.length===0){
