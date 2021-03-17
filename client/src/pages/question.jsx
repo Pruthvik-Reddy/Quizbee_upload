@@ -295,7 +295,7 @@ useEffect(() => {
 
   function checkwhitespaces(arr){
     for(var i=0;i<arr.length;i++){
-      if(!str || !str.trim()){
+      if(!arr[i] || !arr[i].trim()){
         return false
       }
     }
