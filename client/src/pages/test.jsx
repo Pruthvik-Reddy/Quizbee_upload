@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import axios from "axios";
+import { useIsMount } from './useIsMount';
 import {
     f7,
     Page, Panel, View, Row, Col, Button, Link,Icon,
@@ -37,14 +38,13 @@ const test = () => {
     const [duration, setDuration] = useState('');
 
 
+    const [firstrender,setFirstrender]=useState(false);
+
     const [error_duration,seterror_duration]=useState("");
     const [error_pageconfig,seterror_pageconfig]=useState("");
     const [error_passpercent,seterror_passpercent]=useState("");
 
-    const [error_duration_flag,seterror_duration_flag]=useState(0);
-    const [error_pageconfig_flag,seterror_pageconfig_flag]=useState(0);
-    const [error_passpercentflag,seterror_passpercent_flag]=useState(0);
-
+    
 
     const [mainCategory, setMainCategory] = useState('');
     const [subCategory, setSubCategory] = useState('');
@@ -217,6 +217,10 @@ const test = () => {
 
 
     }, [])
+
+
+    
+
     // console.log('maincat')
     // console.log(main_cat)
     // console.log('maincat arr')
@@ -503,12 +507,29 @@ const test = () => {
         }
       };
 
+      const isMount = useIsMount();
+
+
       useEffect(() => {
+        if(!isMount){
         pageconfigErrorHandler();
-        passpercentageErrorHandler();
-        durationErrorHandler();
-      }, [pageconfig,passPercent,duration])
+        }
+      }, [pageconfig])
   
+      useEffect(() => {
+        if(!isMount){
+        passpercentageErrorHandler();
+        }
+      }, [passPercent])
+  
+      useEffect(() => {
+        if(!isMount){
+        durationErrorHandler();
+        }
+      }, [duration])
+  
+
+
       
 
 let session = (JSON.parse(localStorage.getItem("firebase_email")))
