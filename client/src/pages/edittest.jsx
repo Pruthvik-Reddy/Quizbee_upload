@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import axios from "axios";
 import {
   f7,
+  
   Page, Panel, View, Row, Col, Button, Link,Icon,
   App,
   Navbar,
@@ -19,6 +20,7 @@ import {
   ListInput,
   ListButton,
   ListItem,
+  
   BlockFooter, Card,CardContent,CardHeader, Treeview,TreeviewItem,CardFooter
 } from 'framework7-react';
 import firebase from 'firebase';
@@ -35,7 +37,17 @@ const edittest = () => {
     const [date, setDate] = useState('');
     const [duration, setDuration] = useState();
 
-
+    var today = new Date()
+    var dd = today.getDate()
+    var mm = today.getMonth()+1
+    var yyyy = today.getFullYear()
+    if(dd<10){
+      dd= '0'+dd
+    }
+    if(mm<10){
+      mm='0'+mm
+    }
+    today=yyyy+'-'+mm+'-'+dd
     const [error_duration,seterror_duration]=useState("");
     const [error_pageconfig,seterror_pageconfig]=useState("");
     const [error_passpercent,seterror_passpercent]=useState("");
@@ -239,9 +251,17 @@ const edittest = () => {
       //console.log('final questions',finalquestions)
       
       let session = (JSON.parse(localStorage.getItem("firebase_email")))
+      // const calendarDisabled = f7.calendar({
+      //   input:"#calendar-disabled",
+      //   dateFormat:"M dd yyyy",
+      //   disabled:{
+      //     from:new Date(),
+      //     to:new Date()+5
+      //   }
+      // })
       if(session){
       
-
+        console.log(today)
     return(
         <Page>
     <Page id="panel-page">
@@ -345,9 +365,11 @@ const edittest = () => {
           {error_pageconfig?error_pageconfig:""}
           
         </div>
+        
         </ListItem>
 
         <ListItem>
+        
         <ListInput
         label="Validity Date"
         type="date"
@@ -356,13 +378,7 @@ const edittest = () => {
         id="calendar-disabled"
         required
         validate
-        // disabled= 
-        //   {
-        //     from= new Date().setDate(today.getDate()),
-        //     to= new Date().setDate(today.getDate() - 49),
-        //   }
-        
-        // minDate ={moment().toDate()} 
+        min={today}
         value={date}
         onChange={e => setDate(e.target.value)}
         //clearButton
