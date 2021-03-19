@@ -43,7 +43,17 @@ const test = () => {
     const [error_duration,seterror_duration]=useState("");
     const [error_pageconfig,seterror_pageconfig]=useState("");
     const [error_passpercent,seterror_passpercent]=useState("");
-
+    var today = new Date()
+    var dd = today.getDate()
+    var mm = today.getMonth()+1
+    var yyyy = today.getFullYear()
+    if(dd<10){
+      dd= '0'+dd
+    }
+    if(mm<10){
+      mm='0'+mm
+    }
+    today=yyyy+'-'+mm+'-'+dd
     
 
     const [mainCategory, setMainCategory] = useState('');
@@ -550,9 +560,9 @@ if(session){
                 <Link onClick={Sign_out}>Sign Out</Link>
               </p>
 
-              <p>
+              {/* <p>
                 <Link panelClose>Close me</Link>
-              </p>
+              </p> */}
             </Block>
           </Page>
         </Panel>
@@ -708,9 +718,9 @@ if(session){
       <Page>
         <Block strong>
           <p><br/></p>
-          <p>This is page-nested Panel. User</p>
+          {/* <p>This is page-nested Panel. User</p> */}
           <p>
-            <Link onClick={Created_test}>Your Test</Link>
+            <Link onClick={Created_test}>Your Tests</Link>
           </p>
 
           <p>
@@ -720,9 +730,9 @@ if(session){
             <Link onClick={Sign_out}>Sign Out</Link>
           </p>
 
-          <p>
+          {/* <p>
             <Link panelClose>Close me</Link>
-          </p>
+          </p> */}
         </Block>
       </Page>
     </Panel>
@@ -737,7 +747,7 @@ if(session){
           <Link onClick={Create_test}>Create Test</Link>
         </NavLeft> */}
         <NavRight>
-          <Link onClick={Add_question}>Add Question</Link>
+          <Link onClick={Add_question}>Add Questions</Link>
         </NavRight>
 
 
@@ -796,7 +806,7 @@ if(session){
               label="Page config"
               type="number"
               name = "Page_config"
-              placeholder="Number of questions per page.."
+              placeholder="Number of questions per page"
               value={pageconfig}
               onInput={(e) => {
                 setPageConfig(e.target.value);
@@ -819,6 +829,7 @@ if(session){
             required
             validate
             value={date}
+            min = {today}
             onChange={e => setDate(e.target.value)}
             //clearButton
             />
@@ -879,7 +890,7 @@ if(session){
             label="Difficulty"
             type="select"
             
-            placeholder="Please choose difficulty level..."
+            placeholder="Please choose difficulty level"
             onInput={e => setDifficulty(e.target.value)}
             >
             <option defaultValue=""  >....</option> 
@@ -941,9 +952,9 @@ if(session){
           </List> */}
           <List>
             <ListButton onClick={Add_Test_to_Question} >Add Questions</ListButton>
-            <BlockFooter>
+            {/* <BlockFooter>
                 Some text about test Page          
-            </BlockFooter>
+            </BlockFooter> */}
           </List>
         </Page>
       

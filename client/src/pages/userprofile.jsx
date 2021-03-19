@@ -29,7 +29,18 @@ const Userprofile = (props) => {
   const [role_name, setRole_name] = useState('');
   const [dob,setDob]=useState('');
   const[data,setData] = useState('');
-  
+  var today = new Date()
+  var dd = today.getDate()
+  var mm = today.getMonth()+1
+  var yyyy = today.getFullYear()
+  if(dd<10){
+    dd= '0'+dd
+  }
+  if(mm<10){
+    mm='0'+mm
+  }
+  today=yyyy+'-'+mm+'-'+dd
+ 
   //const [showMessage,setShowMessage]= useState(false);
  
   // useEffect(() => {
@@ -66,13 +77,15 @@ const Userprofile = (props) => {
 
 
   const onSubmit = (e) => {
+    let mobile = mobile_number.toString();
+
     if(!firstname){
       f7.dialog.alert('Please enter your firstname');  
     }
     else if(!lastname){
       f7.dialog.alert('Please enter your lastname');  
     }
-    else if(mobile_number.length !== 10){
+    else if(mobile.length !== 10){
       f7.dialog.alert('Please enter your mobile number or it should be 10 digits');  
     }
     else if(!role_name){
@@ -150,7 +163,7 @@ const Userprofile = (props) => {
       validate
       value={lastname}
       onChange={e => setLastname(e.target.value)}
-      clearButton
+      
     />
     {/* <ListInput
       label="Email"
@@ -180,7 +193,7 @@ const Userprofile = (props) => {
       validate
       pattern="[0-9]*"
       onChange={e => setMobile_number(e.target.value)}
-      clearButton
+      
     />
     <ListInput
     label="Role_name"
@@ -203,15 +216,16 @@ const Userprofile = (props) => {
       required
       validate
       value={dob}
+      max={today}
       onChange={e => setDob(e.target.value)}
-      clearButton
+      
     />
 
 
     
   </List>
   <List>
-    <Button className="col" onClick= {e => {onSubmit(e)}}  fill>save</Button>
+    <Button className="col" onClick= {e => {onSubmit(e)}}  fill style={{width:"30%",marginLeft:"30%"}}>save</Button>
   </List>
   <List>
     <Button className="col" onClick= {Create_test}>Go to dashboard</Button>

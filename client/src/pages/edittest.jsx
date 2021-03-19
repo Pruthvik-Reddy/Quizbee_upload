@@ -269,7 +269,7 @@ const edittest = () => {
       <Page>
         <Block strong>
           <p><br/></p>
-          <p>This is page-nested Panel. User</p>
+          {/* <p>This is page-nested Panel. User</p> */}
           <p>
             <Link onClick={Created_test}>Your Test</Link>
           </p>
@@ -281,9 +281,7 @@ const edittest = () => {
             <Link onClick={Sign_out}>Sign Out</Link>
           </p>
 
-          <p>
-            <Link panelClose>Close me</Link>
-          </p>
+          
         </Block>
       </Page>
     </Panel>
@@ -475,13 +473,18 @@ const edittest = () => {
             const deletequestion=()=> {
               console.log('hello question id', val.id)
               console.log('test id', edittest_id)
-              axios.post(`http://localhost:4000/api/remove-question-from-test/${edittest_id}/${val.id}`)
-              .then((d)=>{
-                console.log(d)
-                console.log('deleted successfully')
-                f7.dialog.alert('Deleted Successfully!',"Delete Notification",()=>{window.location.href='/edit-test'});
-              })
-              
+              if(finalquestions.length>1){
+                axios.post(`http://localhost:4000/api/remove-question-from-test/${edittest_id}/${val.id}`)
+                .then((d)=>{
+                  console.log(d)
+                  console.log('deleted successfully')
+                  f7.dialog.alert('Deleted Successfully!',"Delete Notification",()=>{window.location.href='/edit-test'});
+                })
+  
+              }
+              else{
+                f7.dialog.alert('Test should have atleast one question',"Error");
+              }              
             }
             return(
             <Card className="demo-card-header-pic">

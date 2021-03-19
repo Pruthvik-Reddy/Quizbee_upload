@@ -52,6 +52,7 @@ export default function Test_Summary() {
     
     const [certificate_flag,setCertificate_flag]=useState(0);
     const [cert_data,setCert_data]=useState({});
+    // const [backflag, setBackflag] = useState(0)
 
 
 
@@ -99,13 +100,32 @@ export default function Test_Summary() {
           setCertificate_flag(1);
             }
     
+    // useEffect(()=>{
+    //   setBackflag(1)
+    //   console.log("backflag",backflag)
+    //   window.history.pushState(null, document.title, window.location.href);
+    //   window.addEventListener('popstate',function(event){
+    //     window.history.pushState(null, document.title, window.location.href)
+    //   })
+    // },[backflag])
 
     useEffect(()=>{
 
+      // window.history.pushState(null, document.title, window.location.href);
+      // window.addEventListener('popstate',function(event){
+      //   window.history.pushState(null, document.title, window.location.href)
+      // })
+          
+      window.history.pushState(null, null, window.location.href);
+      // window.onpopstate = function(event) {
+      //   history.go(1);
+      // };
+   
+        
         let user_email = (JSON.parse(localStorage.getItem("firebase_email")))
         console.log(user_email)
       
-
+       
 
         axios.get(`http://localhost:4000/route/${user_email}`).then((d)=>{
           //console.log(d)
@@ -126,15 +146,20 @@ export default function Test_Summary() {
         setTests(test_summary);
         
         })  
-  
+        
     },[])
     let session = (JSON.parse(localStorage.getItem("firebase_email")))
     if(session){
+      // if(backflag===1){
+
+  
         if(role !== "Admin"){
+
+     
             if(certificate_flag===1){
                 return <Certificate certificate_data={cert_data} />
-      
             }
+         
           return(
             <Page id="panel-page">
       
@@ -142,7 +167,7 @@ export default function Test_Summary() {
                 <Page>
                   <Block strong>
                     <p><br/></p>
-                    {/* <p>This is page-nested Panel. User</p> */}
+                    
                     <p>
                       <Link onClick={Profile}>Profile</Link>
                     </p>
@@ -150,9 +175,7 @@ export default function Test_Summary() {
                       <Link onClick={Sign_out}>Sign Out</Link>
                     </p>
       
-                    <p>
-                      <Link panelClose>Close me</Link>
-                    </p>
+                    
                   </Block>
                 </Page>
               </Panel>
@@ -172,6 +195,7 @@ export default function Test_Summary() {
       
       
               </Navbar>
+             
               <div class="data-table">
   <table>
     <thead>
@@ -201,26 +225,18 @@ export default function Test_Summary() {
     </tbody>
   </table>
 </div>
-
-      
-      
-      
-              {/* 
-                  <BlockFooter>Page is Under development....</BlockFooter></center>
-                  <Block strong className="text-align-center">
-                      <Preloader color="multi" />
-                      </Block> */}
       
               </Page>
                   
               )
       
       }
+    // }
     }
 
     return (
         <Page>
-            <h1>LOading</h1>
+            <h1>Unauthorized</h1>
                     </Page>
             
         

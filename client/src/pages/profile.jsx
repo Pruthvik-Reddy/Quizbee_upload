@@ -45,6 +45,17 @@ const Profile = (props) => {
   //const [showMessage,setShowMessage]= useState(false);
  //user or admin
  const [role,setRole] = useState("")
+ var today = new Date()
+ var dd = today.getDate()
+ var mm = today.getMonth()+1
+ var yyyy = today.getFullYear()
+ if(dd<10){
+   dd= '0'+dd
+ }
+ if(mm<10){
+   mm='0'+mm
+ }
+ today=yyyy+'-'+mm+'-'+dd
 
   useEffect(() => {
     const localAuthUser=JSON.parse(localStorage.getItem("firebase_email"));
@@ -93,13 +104,16 @@ const Profile = (props) => {
 
 
   const onSubmit = (e) => {
+    
+    let mobile = mobile_number.toString();
+    
     if(!firstname){
       f7.dialog.alert('Please enter your firstname');  
     }
     else if(!lastname){
       f7.dialog.alert('Please enter your lastname');  
     }
-    else if(mobile_number.length !== 10){
+    else if(mobile.length !== 10){
       f7.dialog.alert('Please enter your mobile number or it should be 10 digits');  
     }
     else if(!role_name){
@@ -124,8 +138,8 @@ const Profile = (props) => {
       }
       console.log(data)
       updateuser(data);
-      f7.dialog.alert(' successfully');
-      window.location.href = '/create-test'
+      f7.dialog.alert('Profile updated successfully',"Updated", ()=>{window.location.href='/select'});
+      //window.location.href = '/create-test'
       //clearState();
       //setShowMessage(true);
     }  
@@ -191,7 +205,7 @@ const Profile = (props) => {
               <Page>
                 <Block strong>
                   <p><br/></p>
-                  <p>This is page-nested Panel. User</p>
+                  {/* <p>This is page-nested</p> */}
                   <p>
                     <Link onClick={Created_test}>Your Test</Link>
                   </p>
@@ -203,9 +217,9 @@ const Profile = (props) => {
                     <Link onClick={Sign_out}>Sign Out</Link>
                   </p>
 
-                  <p>
+                  {/* <p>
                     <Link panelClose>Close me</Link>
-                  </p>
+                  </p> */}
                 </Block>
               </Page>
             </Panel>
@@ -228,6 +242,7 @@ const Profile = (props) => {
 
                   
           <List form>
+          <LoginScreenTitle>Edit Profile</LoginScreenTitle>
           <ListInput
               label="Firstname"
               type="text"
@@ -304,6 +319,7 @@ const Profile = (props) => {
               required
               validate
               value={dob}
+              max={today}
               onChange={e => setDob(e.target.value)}
               
             />
@@ -313,7 +329,7 @@ const Profile = (props) => {
             
           </List>
           <List>
-            <Button className="col" onClick= {e => {onSubmit(e)}}  fill>save</Button>
+            <Button className="col" onClick= {e => {onSubmit(e)}}  fill style={{width:"30%",marginLeft:"30%"}}>save</Button>
           </List>
         </Page>
           )  
@@ -336,9 +352,9 @@ const Profile = (props) => {
                       <Link onClick={Sign_out}>Sign Out</Link>
                     </p>
       
-                    <p>
+                    {/* <p>
                       <Link panelClose>Close me</Link>
-                    </p>
+                    </p> */}
                   </Block>
                 </Page>
               </Panel>
@@ -361,6 +377,7 @@ const Profile = (props) => {
       
                   
           <List form>
+          <LoginScreenTitle>Edit Profile</LoginScreenTitle>
           <ListInput
               label="Firstname"
               type="text"
@@ -437,6 +454,7 @@ const Profile = (props) => {
               required
               validate
               value={dob}
+              max={today}
               onChange={e => setDob(e.target.value)}
               
             />
@@ -446,7 +464,7 @@ const Profile = (props) => {
             
           </List>
           <List >
-            <Button className="col"  onClick= {e => {onSubmit(e)}}  fill>save</Button>
+            <Button className="col"  onClick= {e => {onSubmit(e)}}  fill style={{width:"30%",marginLeft:"30%"}}>save</Button>
           </List>
         </Page>
           )  

@@ -164,7 +164,7 @@ const Question_form = ({f7,f7router}) => {
           <Page>
             <Block strong>
               <p><br/></p>
-              <p>This is page-nested Panel. User</p>
+              
               <p>
                 <Link onClick={Created_test}>Your Test</Link>
               </p>
@@ -176,9 +176,7 @@ const Question_form = ({f7,f7router}) => {
                 <Link onClick={Sign_out}>Sign Out</Link>
               </p>
     
-              <p>
-                <Link panelClose>Close me</Link>
-              </p>
+              
             </Block>
           </Page>
         </Panel>
