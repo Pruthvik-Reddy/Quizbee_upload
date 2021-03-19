@@ -46,6 +46,10 @@ export default function Questions(props) {
 
    const [selectedoption,setSelectedoption]=useState([]);
    
+  
+
+
+   const [difficulty_level,setDifficultylevel]=useState("easy");
 
    
 
@@ -185,6 +189,9 @@ useEffect(() => {
    // props.questiontypechildfunc(e.target.value);
   }
 
+  const onChangedifficultylevel=(e)=>{
+    setDifficultylevel(e.target.value);
+    }
    
   
    const removeTag = (i) => {
@@ -288,12 +295,22 @@ useEffect(() => {
       
   }
 
+
+  function checkwhitespaces(arr){
+    for(var i=0;i<arr.length;i++){
+      if(!arr[i] || !arr[i].trim()){
+        return false
+      }
+    }
+    return true
+  }
+
   const myQuestionSubmitfunc=()=>{
     if(!category){
       f7.dialog.alert('Please select category ');  
     }
 
-    else if(!selected_sub_cats_2){
+    else if(selected_sub_cats_2.length===0){
       f7.dialog.alert('Please select sub category ');  
     }
     else if(!questiontype){
@@ -310,6 +327,13 @@ useEffect(() => {
     else if(inputList.includes("")){ 
       f7.dialog.alert("Options should not be Empty")
 
+    }
+    else if(!checkwhitespaces(inputList)){
+      f7.dialog.alert("Options cannot have blank spaces only")
+
+    }
+    else if(selectedoption.length===0){
+      f7.dialog.alert("Choose the correct option");
     }
     else{
     axios.get(`http://localhost:4000/route/get-user-id/${get_email}`).then(data12=>{
@@ -332,10 +356,11 @@ useEffect(() => {
     let created_by = current_user_id
     let answers = inputList
     let correct_answers = selectedoption
-    let difficulty_level = "easy"
+    let difficulty = difficulty_level;
     let answer_type = questiontype
 
-
+      console.log("difficulty");
+      console.log(difficulty);
 
 
     let data = {
@@ -343,7 +368,7 @@ useEffect(() => {
         sub_categories,
         question,
         created_by,
-        answers, correct_answers,difficulty_level,answer_type
+        answers, correct_answers,difficulty,answer_type
 
 
     }
@@ -450,6 +475,26 @@ useEffect(() => {
       </ul>
   </div>
   
+  <div class="list">
+    <ul>
+      <li>
+        <a class="item-link smart-select" data-open-in="popup">
+          <select name="difficulty_level" onChange={onChangedifficultylevel} value={difficulty_level}>
+          <option value="easy" selected>easy</option>
+              <option value="moderate">moderate</option>
+              <option value="difficult">difficult</option>
+              
+            </select>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title">SELECT QUESTION DIFFICULTY</div>
+              </div>
+          </div>
+        </a>
+      </li>
+      </ul>
+  </div>
+  
   
   
         <div class="block-title" >Question Description</div>
@@ -499,7 +544,7 @@ useEffect(() => {
                         
                     {/* </div> */}
                     
-                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"75%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
+                    {inputList.length - 1 === i && <Button onClick={handleAddClick} style={{position:"absolute",left:"25%",top:"86%"}}><Icon f7="plus_circle" size="35px" color="blue"></Icon></Button>}
                     
                 </div>
                 );

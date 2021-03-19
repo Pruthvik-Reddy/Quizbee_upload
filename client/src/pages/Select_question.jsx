@@ -184,13 +184,20 @@ const SelectQuestion = () => {
       console.log('question_list_ids',arr_id)
       let questionlist = arr_id;
       console.log('passsing data to database',questionlist)
-
-      axios.post(`http://localhost:4000/api/add-test-question/${test_ID}/${questionlist}`).then((d)=>{
+      if(questionlist.length>0){
+        axios.post(`http://localhost:4000/api/add-test-question/${test_ID}/${questionlist}`).then((d)=>{
         console.log(d)
+        f7.dialog.alert('Test created successfully',"Test Created",()=>{window.location.href = '/created-test'});
       }).catch(err=>{
         alert(err)
       })
-      f7.dialog.alert('Test created successfully',"Test Created",()=>{window.location.href = '/created-test'});
+      
+      }
+
+      else{
+        f7.dialog.alert('Please select questions',"Error")
+      }
+      
       //window.location.href = '/created-test'
     }
     const Your_test = () => {
@@ -210,7 +217,7 @@ return(
       <Page>
         <Block strong>
           <p><br/></p>
-          <p>This is page-nested Panel. User</p>
+         
           <p>
             <Link onClick={Your_test}>Your Test</Link>
           </p>
@@ -222,9 +229,7 @@ return(
             <Link onClick={Sign_out}>Sign Out</Link>
           </p>
 
-          <p>
-            <Link panelClose>Close me</Link>
-          </p>
+          
         </Block>
       </Page>
     </Panel>

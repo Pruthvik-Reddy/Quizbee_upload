@@ -141,7 +141,7 @@ if(session)
           <Page>
             <Block strong>
               <p><br/></p>
-              <p>This is page-nested Panel. User</p>
+              
               <p>
                 <Link onClick={Profile}>Profile</Link>
               </p>
@@ -149,9 +149,7 @@ if(session)
                 <Link onClick={Sign_out}>Sign Out</Link>
               </p>
 
-              <p>
-                <Link panelClose>Close me</Link>
-              </p>
+              
             </Block>
           </Page>
         </Panel>

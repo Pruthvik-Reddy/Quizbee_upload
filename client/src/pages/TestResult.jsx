@@ -23,6 +23,11 @@ import {
 function TestResult(props) {
 
     const [role,setRole] = useState("")
+    let complete = props.testresdata["testid"];
+    console.log('complete test id 1', complete)
+    localStorage.setItem("complete_test", JSON.stringify(complete));
+    const complete_test = JSON.parse(localStorage.getItem("complete_test"));
+    console.log('complete test id 2',complete_test)
 
     const Sign_out = () => {
         firebase.auth().signOut().then(() => {
@@ -63,6 +68,10 @@ function TestResult(props) {
       let session = (JSON.parse(localStorage.getItem("firebase_email")))
       if(session){
           if(role !== "Admin"){
+            history.pushState(null, null, location.href);
+            window.onpopstate = function(event) {
+              history.go(1);
+            };
             return(
                 <Page id="panel-page">
           
@@ -78,9 +87,7 @@ function TestResult(props) {
                           <Link onClick={Sign_out}>Sign Out</Link>
                         </p>
           
-                        <p>
-                          <Link panelClose>Close me</Link>
-                        </p>
+                       
                       </Block>
                     </Page>
                   </Panel>

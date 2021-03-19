@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import axios from "axios";
 import {
   f7,
+  
   Page, Panel, View, Row, Col, Button, Link,Icon,
   App,
   Navbar,
@@ -19,26 +20,83 @@ import {
   ListInput,
   ListButton,
   ListItem,
+  
   BlockFooter, Card,CardContent,CardHeader, Treeview,TreeviewItem,CardFooter
 } from 'framework7-react';
 import firebase from 'firebase';
 import SelectQuestion from './Select_question';
+// import ModalComponent from 'framework7/types/components/modal/modal';
 require('firebase/auth');
 
 
 const edittest = () => {
     const [test_name, setTestName] = useState('');
-    const [passPercent, setPassPercent] = useState('');
+    const [passPercent, setPassPercent] = useState();
     const [iscertificate, setIsCertificate] = useState('');
-    const [pageconfig, setPageConfig] = useState('');
+    const [pageconfig, setPageConfig] = useState();
     const [date, setDate] = useState('');
-    const [duration, setDuration] = useState('');
+    const [duration, setDuration] = useState();
+
+    var today = new Date()
+    var dd = today.getDate()
+    var mm = today.getMonth()+1
+    var yyyy = today.getFullYear()
+    if(dd<10){
+      dd= '0'+dd
+    }
+    if(mm<10){
+      mm='0'+mm
+    }
+    today=yyyy+'-'+mm+'-'+dd
+    const [error_duration,seterror_duration]=useState("");
+    const [error_pageconfig,seterror_pageconfig]=useState("");
+    const [error_passpercent,seterror_passpercent]=useState("");
 
 
     const [questionarray,setQuestionArray] = useState([""]);
     const [finalquestions, setFinalQuestions] = useState([""])
     let arr = new Array();
     let edittest_id=JSON.parse(sessionStorage.getItem("edittest-id"));
+
+
+
+    const pageconfigErrorHandler=()=>{
+      //console.log(typeof pageconfig)
+      if(pageconfig<=0 || (isNaN(pageconfig))){
+      seterror_pageconfig("Number of Questions in a Page cannot be Zero or Negative")
+      }
+      else{
+        seterror_pageconfig("")
+      }
+
+    }
+
+
+    const passpercentageErrorHandler=()=>{
+      console.log(passPercent)
+      if((passPercent<1) || (passPercent>100) || (isNaN(passPercent))){
+      seterror_passpercent("Invalid Pass Percentage")
+      }
+      else{
+        seterror_passpercent("")
+      }
+
+    }
+
+
+    const durationErrorHandler=()=>{
+      
+      if(isNaN(duration)){
+        seterror_duration("Invalid Duration")
+      }
+      else if(duration<=0){
+        seterror_duration("Duration cannot be Zero or Negative")
+      }
+      else{
+        seterror_duration("");
+      }
+    };
+
     
     useEffect(() => {
       
@@ -118,6 +176,15 @@ const edittest = () => {
 
     }, [])
     
+
+
+    useEffect(() => {
+      pageconfigErrorHandler();
+      passpercentageErrorHandler();
+      durationErrorHandler();
+    }, [pageconfig,passPercent,duration])
+
+
     const changecertifiable = (event) =>{
         setIsCertificate(event.target.value);
       }
@@ -156,6 +223,11 @@ const edittest = () => {
         setFinalQuestions(questionarray);
       }
       const Update = () => {
+
+        if(error_duration!=="" || error_pageconfig!=="" || error_passpercent!=="" ){
+          f7.dialog.alert("One or more of your input values is causing an error","Error Updating")
+        }
+        else{
         console.log('update test id', edittest_id)
         let TestName = test_name;
         let PassPercent = passPercent;
@@ -170,17 +242,26 @@ const edittest = () => {
         axios.put(`http://localhost:4000/api/update-test/${edittest_id}`, data)
         .then(d => {
             console.log(d);
-            f7.dialog.alert('Updated!',"Update Notification");
+            f7.dialog.alert('Updated!',"Update Notification",()=>{window.location.href='/created-test'});
         })
         .catch(err => alert(err))
 
       }
+      }
       //console.log('final questions',finalquestions)
       
       let session = (JSON.parse(localStorage.getItem("firebase_email")))
+      // const calendarDisabled = f7.calendar({
+      //   input:"#calendar-disabled",
+      //   dateFormat:"M dd yyyy",
+      //   disabled:{
+      //     from:new Date(),
+      //     to:new Date()+5
+      //   }
+      // })
       if(session){
       
-
+        console.log(today)
     return(
         <Page>
     <Page id="panel-page">
@@ -188,7 +269,7 @@ const edittest = () => {
       <Page>
         <Block strong>
           <p><br/></p>
-          <p>This is page-nested Panel. User</p>
+          {/* <p>This is page-nested Panel. User</p> */}
           <p>
             <Link onClick={Created_test}>Your Test</Link>
           </p>
@@ -200,9 +281,7 @@ const edittest = () => {
             <Link onClick={Sign_out}>Sign Out</Link>
           </p>
 
-          <p>
-            <Link panelClose>Close me</Link>
-          </p>
+          
         </Block>
       </Page>
     </Panel>
@@ -226,6 +305,7 @@ const edittest = () => {
             
             <LoginScreenTitle>Edit Test</LoginScreenTitle>
       <List form>
+        <ListItem>
         <ListInput
           label="Test Name"
           type="text"
@@ -233,10 +313,10 @@ const edittest = () => {
           placeholder="Test Name"
           value={test_name}
           readonly
-        //   onInput={(e) => {
-        //     setTestName(e.target.value);
-        //   }}
         />
+        </ListItem>
+        
+        <ListItem >
         <ListInput
           label="Pass Percent"
           type="number"
@@ -244,11 +324,16 @@ const edittest = () => {
           placeholder="Pass Percent"
           value={passPercent}
           onInput={(e) => {
-            setPassPercent(e.target.value);
+            setPassPercent(parseInt(e.target.value));
           }}
         />
-      
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          
+        {error_passpercent?error_passpercent:""}</div>
+        </ListItem>
         
+      
+      <ListItem>
       <ListInput
         label="Is certifiable ?"
         type="select"
@@ -259,9 +344,10 @@ const edittest = () => {
             <option>NO</option> 
             
         </ListInput>
+        </ListItem>
         
              
-
+          <ListItem>
       <ListInput
           label="Page config"
           type="number"
@@ -269,30 +355,51 @@ const edittest = () => {
           placeholder="Number of questions per page.."
           value={pageconfig}
           onInput={(e) => {
-            setPageConfig(e.target.value);
-          }}
+            setPageConfig(parseInt(e.target.value));
+            }}
+         
         />
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          {error_pageconfig?error_pageconfig:""}
+          
+        </div>
+        
+        </ListItem>
+
+        <ListItem>
+        
         <ListInput
         label="Validity Date"
         type="date"
         name="Validity_date"
         info="Default validation"
+        id="calendar-disabled"
         required
         validate
+        min={today}
         value={date}
         onChange={e => setDate(e.target.value)}
         //clearButton
         />
-      <ListInput
+        </ListItem>
+
+
+        <ListItem>      <ListInput
           label="Duration in minutes"
           type="number"
           name = "Duration"
           placeholder="Duration in minutes"
           value={duration}
           onInput={(e) => {
-            setDuration(e.target.value);
+            setDuration(parseInt(e.target.value));
           }}
         />
+        <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+        
+        {error_duration?error_duration:""}
+        </div>
+        </ListItem>
+
         {/* <React.Fragment>
         
         <div>  */}
@@ -366,13 +473,18 @@ const edittest = () => {
             const deletequestion=()=> {
               console.log('hello question id', val.id)
               console.log('test id', edittest_id)
-              axios.post(`http://localhost:4000/api/remove-question-from-test/${edittest_id}/${val.id}`)
-              .then((d)=>{
-                console.log(d)
-                console.log('deleted successfully')
-                f7.dialog.alert('Deleted Successfully!',"Delete Notification",()=>{window.location.href='/edit-test'});
-              })
-              
+              if(finalquestions.length>1){
+                axios.post(`http://localhost:4000/api/remove-question-from-test/${edittest_id}/${val.id}`)
+                .then((d)=>{
+                  console.log(d)
+                  console.log('deleted successfully')
+                  f7.dialog.alert('Deleted Successfully!',"Delete Notification",()=>{window.location.href='/edit-test'});
+                })
+  
+              }
+              else{
+                f7.dialog.alert('Test should have atleast one question',"Error");
+              }              
             }
             return(
             <Card className="demo-card-header-pic">

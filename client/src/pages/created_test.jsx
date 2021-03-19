@@ -117,7 +117,7 @@ return(
     <Page>
       <Block strong>
         <p><br/></p>
-        <p>This is page-nested Panel. User</p>
+        {/* <p>This is page-nested Panel. User</p> */}
         <p>
           <Link onClick={Created_test}>Your Test</Link>
         </p>
@@ -129,9 +129,9 @@ return(
           <Link onClick={Sign_out}>Sign Out</Link>
         </p>
 
-        <p>
+        {/* <p>
           <Link panelClose>Close me</Link>
-        </p>
+        </p> */}
       </Block>
     </Page>
   </Panel>

@@ -68,13 +68,22 @@ const [testresdata,setTestresdata]=useState({});
     const [seconds, setSeconds ] =  useState(1);
     
     const [timer_flag,setTimerflag]=useState(0);
-    
+    const [start_complete_flag, setStart_Comple_Flag] = useState(0);
 
     useEffect(()=>{
       if(question_ids.length ===0){
         //console.log("ININININ")
       //console.log(question_ids.length);
+      //window.localStorage.removeItem('start_test');
+      //window.localStorage.removeItem('complete_test');
       const test_id=JSON.parse(sessionStorage.getItem("stutest-id"));
+      localStorage.setItem("start_test", JSON.stringify(test_id));
+      const start_test=JSON.parse(localStorage.getItem("start_test"));
+      console.log('start test',start_test)
+      setStart_Comple_Flag(1);
+
+
+
       setTid(test_id)
 
       axios.get(`http://localhost:4000/api/get-test/${test_id}`)
@@ -261,10 +270,13 @@ const [testresdata,setTestresdata]=useState({});
     const Profile = () => {
       window.location.href = '/edit-profile'
     }
-
+    const Create_test = () => {
+      window.location.href = '/create-test'
+    }
 
     const All_Test = () => {
-      f7.dialog.alert('Your already in all test page');
+      // f7.dialog.alert('Your already in all test page');
+      window.location.href='/create-test'
     }
     const Test_summary = () => {
       //f7.dialog.alert('Page is under development');
@@ -334,7 +346,9 @@ const [testresdata,setTestresdata]=useState({});
               result:result,
               test_name:tname,
               number_of_questions:questions.length,
-              number_of_correct_answers:number_of_correct_answers
+              number_of_correct_answers:number_of_correct_answers,
+              testid: tid
+
             }
               setTestresdata(temp_data)
               setTestflag(1);
@@ -381,11 +395,21 @@ const [testresdata,setTestresdata]=useState({});
 
 
 if(testflag===1){
+  // history.pushState(null, null, location.href);
+  //     window.onpopstate = function(event) {
+  //       history.go(1);
+  //     };
+   
   return (<TestResult testresdata={testresdata} />)
 }
   
   if(count_flag===1){
-    // console.log(pagination.currentData,"qwertyuio")
+    
+      history.pushState(null, null, location.href);
+      window.onpopstate = function(event) {
+        history.go(1);
+      };
+   
     return (
       <Page>
 
@@ -430,73 +454,90 @@ if(testflag===1){
     );
   }
   else{
-    return(
+    const start_test=JSON.parse(localStorage.getItem("start_test"));
+    const complete_test = JSON.parse(localStorage.getItem("complete_test"));
+    console.log(start_test,complete_test)
+
+    if(start_test!==complete_test){
+      return(
       
-      // <Page>
-      // <Navbar title="My App" backLink="Back">
-      //   <NavRight>
-      //     <Link icon="icon-bars" panelOpen="right">Right panel</Link>
-      //   </NavRight>
-      // </Navbar>
-
-
-
-      //   <center>
-      //   <button onClick={Flag}>Start Test</button>
-      //   </center>
-      // </Page>
-      
-      <Page id="panel-page">
-        <Panel left cover themeLight containerEl="#panel-page" id="panel-nested">
-          <Page>
-            <Block strong>
-              <p><br/></p>
-              <p>This is page-nested Panel. User</p>
-              <p>
-                <Link onClick={Profile}>Profile</Link>
-              </p>
-              <p>
-                <Link onClick={Sign_out}>Sign Out</Link>
-              </p>
-
-              <p>
-                <Link panelClose>Close me</Link>
-              </p>
-            </Block>
-          </Page>
-        </Panel>
-
-        <Navbar>
-            <NavLeft>
-              {/* <Icon f7="bars" size="44px" color="blue"></Icon> */}
-              <Link icon="menu" panelOpen="#panel-nested"><Icon f7="bars" size="44px" color="blue"></Icon></Link>
-            </NavLeft>
-
-            <NavLeft>
-              <Link onClick={All_Test}>All Tests</Link>
-            </NavLeft>
-            <NavRight>
-              <Link onClick={Test_summary}>Test Summary</Link>
-            </NavRight>
-
-
-        </Navbar>
-           <center>
-         <button onClick={Flag}>Start Test</button>
-         </center>
-
-        {/* <Block>
-          <Row tag="p">
-            <Col tag="span">
-              <Button raised fill panelOpen="#panel-nested">
-                Open nested panel
-              </Button>
-            </Col>
-          </Row>
-        </Block> */}
-      </Page>
+        // <Page>
+        // <Navbar title="My App" backLink="Back">
+        //   <NavRight>
+        //     <Link icon="icon-bars" panelOpen="right">Right panel</Link>
+        //   </NavRight>
+        // </Navbar>
   
+  
+  
+        //   <center>
+        //   <button onClick={Flag}>Start Test</button>
+        //   </center>
+        // </Page>
+        
+        <Page id="panel-page">
+          <Panel left cover themeLight containerEl="#panel-page" id="panel-nested">
+            <Page>
+              <Block strong>
+                <p><br/></p>
+                
+                <p>
+                  <Link onClick={Profile}>Profile</Link>
+                </p>
+                <p>
+                  <Link onClick={Sign_out}>Sign Out</Link>
+                </p>
+  
+                {/* <p>
+                  <Link panelClose>Close me</Link>
+                </p> */}
+              </Block>
+            </Page>
+          </Panel>
+  
+          <Navbar>
+              <NavLeft>
+                {/* <Icon f7="bars" size="44px" color="blue"></Icon> */}
+                <Link icon="menu" panelOpen="#panel-nested"><Icon f7="bars" size="44px" color="blue"></Icon></Link>
+              </NavLeft>
+  
+              <NavLeft>
+                <Link onClick={All_Test}>All Tests</Link>
+              </NavLeft>
+              <NavRight>
+                <Link onClick={Test_summary}>Test Summary</Link>
+              </NavRight>
+  
+  
+          </Navbar>
+             <center>
+           <button onClick={Flag}>Start Test</button>
+           </center>
+  
+          {/* <Block>
+            <Row tag="p">
+              <Col tag="span">
+                <Button raised fill panelOpen="#panel-nested">
+                  Open nested panel
+                </Button>
+              </Col>
+            </Row>
+          </Block> */}
+        </Page>
+    
+        )
+  
+    }
+    else{
+      //window.location.href = '/create-test'
+      console.log('returns')
+      //f7.dialog.alert('Redirecting you to all test page ', "Alert")
+      return(
+        <center><p>Sorry due to some technical problem you landed on wrong page, Please click on this to go back</p>
+          <Button onClick={Create_test}>Go back</Button>
+        </center>
       )
+    }
   }
 }
 

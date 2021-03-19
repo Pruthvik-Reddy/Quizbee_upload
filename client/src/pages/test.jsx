@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import axios from "axios";
+import { useIsMount } from './useIsMount';
 import {
     f7,
     Page, Panel, View, Row, Col, Button, Link,Icon,
@@ -35,6 +36,25 @@ const test = () => {
     const [pageconfig, setPageConfig] = useState('');
     const [date, setDate] = useState('');
     const [duration, setDuration] = useState('');
+
+
+    const [firstrender,setFirstrender]=useState(false);
+
+    const [error_duration,seterror_duration]=useState("");
+    const [error_pageconfig,seterror_pageconfig]=useState("");
+    const [error_passpercent,seterror_passpercent]=useState("");
+    var today = new Date()
+    var dd = today.getDate()
+    var mm = today.getMonth()+1
+    var yyyy = today.getFullYear()
+    if(dd<10){
+      dd= '0'+dd
+    }
+    if(mm<10){
+      mm='0'+mm
+    }
+    today=yyyy+'-'+mm+'-'+dd
+    
 
     const [mainCategory, setMainCategory] = useState('');
     const [subCategory, setSubCategory] = useState('');
@@ -207,6 +227,10 @@ const test = () => {
 
 
     }, [])
+
+
+    
+
     // console.log('maincat')
     // console.log(main_cat)
     // console.log('maincat arr')
@@ -268,6 +292,9 @@ const test = () => {
         //console.log(test_name,passPercent,iscertificate,pageconfig,date,duration,mainCategory,subCategory,difficulty)
         if(!test_name){
           f7.dialog.alert('Please enter your testname');  
+        }
+        else if(error_duration!=="" || error_pageconfig!=="" || error_passpercent!=="" ){
+          f7.dialog.alert("One or more of your input values is causing an error","Error Creating Test")
         }
         else if(!passPercent){
           f7.dialog.alert('Please enter your pass percentage properly');  
@@ -453,6 +480,66 @@ const test = () => {
       }
 
 
+      const pageconfigErrorHandler=()=>{
+        //console.log(typeof pageconfig)
+        if(pageconfig<=0 || (isNaN(pageconfig))){
+        seterror_pageconfig("Number of Questions in a Page cannot be Zero or Negative")
+        }
+        else{
+          seterror_pageconfig("")
+        }
+  
+      }
+  
+  
+      const passpercentageErrorHandler=()=>{
+        console.log(passPercent)
+        if((passPercent<1) || (passPercent>100) || (isNaN(passPercent))){
+        seterror_passpercent("Invalid Pass Percentage")
+        }
+        else{
+          seterror_passpercent("")
+        }
+  
+      }
+  
+  
+      const durationErrorHandler=()=>{
+        
+        if(isNaN(duration)){
+          seterror_duration("Invalid Duration")
+        }
+        else if(duration<=0){
+          seterror_duration("Duration cannot be Zero or Negative")
+        }
+        else{
+          seterror_duration("");
+        }
+      };
+
+      const isMount = useIsMount();
+
+
+      useEffect(() => {
+        if(!isMount){
+        pageconfigErrorHandler();
+        }
+      }, [pageconfig])
+  
+      useEffect(() => {
+        if(!isMount){
+        passpercentageErrorHandler();
+        }
+      }, [passPercent])
+  
+      useEffect(() => {
+        if(!isMount){
+        durationErrorHandler();
+        }
+      }, [duration])
+  
+
+
       
 
 let session = (JSON.parse(localStorage.getItem("firebase_email")))
@@ -473,9 +560,9 @@ if(session){
                 <Link onClick={Sign_out}>Sign Out</Link>
               </p>
 
-              <p>
+              {/* <p>
                 <Link panelClose>Close me</Link>
-              </p>
+              </p> */}
             </Block>
           </Page>
         </Panel>
@@ -631,9 +718,9 @@ if(session){
       <Page>
         <Block strong>
           <p><br/></p>
-          <p>This is page-nested Panel. User</p>
+          {/* <p>This is page-nested Panel. User</p> */}
           <p>
-            <Link onClick={Created_test}>Your Test</Link>
+            <Link onClick={Created_test}>Your Tests</Link>
           </p>
 
           <p>
@@ -643,9 +730,9 @@ if(session){
             <Link onClick={Sign_out}>Sign Out</Link>
           </p>
 
-          <p>
+          {/* <p>
             <Link panelClose>Close me</Link>
-          </p>
+          </p> */}
         </Block>
       </Page>
     </Panel>
@@ -660,7 +747,7 @@ if(session){
           <Link onClick={Create_test}>Create Test</Link>
         </NavLeft> */}
         <NavRight>
-          <Link onClick={Add_question}>Add Question</Link>
+          <Link onClick={Add_question}>Add Questions</Link>
         </NavRight>
 
 
@@ -668,6 +755,8 @@ if(session){
 
           <LoginScreenTitle>Create Test</LoginScreenTitle>
           <List form>
+
+            <ListItem>
             <ListInput
               label="Test Name"
               type="text"
@@ -678,6 +767,9 @@ if(session){
                 setTestName(e.target.value);
               }}
             />
+            </ListItem>
+
+            <ListItem>
             <ListInput
               label="Pass Percent"
               type="number"
@@ -688,8 +780,14 @@ if(session){
                 setPassPercent(e.target.value);
               }}
             />
+             <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          
+          {error_passpercent?error_passpercent:""}</div>
+         
+            </ListItem>
           {/* <React.Fragment>
             <div> */}
+          <ListItem>
           <ListInput
             label="Is certifiable ?"
             type="select"
@@ -700,19 +798,29 @@ if(session){
                 <option>NO</option> 
                 
             </ListInput>
+            </ListItem>
             {/* </div>
             </React.Fragment>       */}
-
+          <ListItem>
           <ListInput
               label="Page config"
               type="number"
               name = "Page_config"
-              placeholder="Number of questions per page.."
+              placeholder="Number of questions per page"
               value={pageconfig}
               onInput={(e) => {
                 setPageConfig(e.target.value);
               }}
             />
+            <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}}>
+          {error_pageconfig?error_pageconfig:""}
+          
+        </div>
+        
+            </ListItem>
+
+
+            <ListItem>
             <ListInput
             label="Validity Date"
             type="date"
@@ -721,9 +829,14 @@ if(session){
             required
             validate
             value={date}
+            min = {today}
             onChange={e => setDate(e.target.value)}
             //clearButton
             />
+            </ListItem>
+
+
+            <ListItem>
           <ListInput
               label="Duration in minutes"
               type="number"
@@ -734,6 +847,12 @@ if(session){
                 setDuration(e.target.value);
               }}
             />
+            <div style={{fontSize:"80%",marginTop:".25rem",color:"#dc3545",width:"100%"}} >
+        
+        {error_duration?error_duration:""}
+        </div>
+        
+            </ListItem>
             {/* <React.Fragment>
             
             <div>  */}
@@ -741,6 +860,7 @@ if(session){
                * This method will trigger every time different 
                * option is selected. 
                */}
+          <ListItem>
           <ListInput
             label="Main Category"
             type="select"
@@ -748,8 +868,11 @@ if(session){
             onInput={changeSelectOptionHandler}> 
               { main_options }
             </ListInput>
+            </ListItem>
             {/* </div> 
             <div>  */}
+
+            <ListItem>
             <ListInput
             label="Sub Category"
             type="select"
@@ -757,16 +880,17 @@ if(session){
             onInput = {changeSelect_2_OptionHandler}>
               { sub_options }
             </ListInput>
+            </ListItem>
             {/* </div> 
             
             </React.Fragment> */}
 
-
+            <ListItem>
           <ListInput
             label="Difficulty"
             type="select"
             
-            placeholder="Please choose difficulty level..."
+            placeholder="Please choose difficulty level"
             onInput={e => setDifficulty(e.target.value)}
             >
             <option defaultValue=""  >....</option> 
@@ -776,6 +900,7 @@ if(session){
         
             
             </ListInput>
+            </ListItem>
 
           {/* <ListInput
               label="Page config"
@@ -827,9 +952,9 @@ if(session){
           </List> */}
           <List>
             <ListButton onClick={Add_Test_to_Question} >Add Questions</ListButton>
-            <BlockFooter>
+            {/* <BlockFooter>
                 Some text about test Page          
-            </BlockFooter>
+            </BlockFooter> */}
           </List>
         </Page>
       

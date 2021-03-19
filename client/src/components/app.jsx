@@ -43,6 +43,7 @@ const MyApp = () => {
       store: store,
       // App routes
       routes: routes,
+      
   };
   const alertLoginData = () => {
     f7.dialog.alert('Username: ' + username + '<br>Password: ' + password, () => {
