@@ -16,7 +16,9 @@ exports.createTestSummary = (req, res) => {
     summary.save()
     .then((data)=>{
         console.log('Test saved')
-        res.status(200).send(data)
+        //res.status(200).json({'new_summary': 'Test Summary created successfully'});
+        res.status(200);
+        res.send(data);
     })
     .catch(()=>{
         res.status(400).send("Failed to save summary")
@@ -30,6 +32,7 @@ exports.getSummaryofAllTests = (req,res)=>{
     testsummary.find({UserEmail:req.params.u_email},function(err,data){
         if(data){
             res.send(data)
+            res.status(200)
         }
         else{
             res.status(400).send('No data');

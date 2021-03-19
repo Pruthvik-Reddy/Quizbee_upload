@@ -1,10 +1,12 @@
-//const create_question= require("../server/");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-
 const assert=chai.assert;
 chai.use(chaiHttp);
+
+let test_question_id;
+
+
 describe("Question", () => {
   
   it("Creating Question", done => {
@@ -35,6 +37,7 @@ describe("Question", () => {
         .get(`/questions-filtered-by-category/${main_category_name}/${sub_category_name}`)
         .end((err,res)=>{
             //console.log(res.body)
+            test_question_id=res.body[0]._id;
             assert.equal(res.status,"200");
             assert.equal(res.body[0].question_description,"TESTING QUESTION I"),
             assert.equal(res.body[0].category_id_array[1],"Testing Category")
@@ -44,6 +47,23 @@ describe("Question", () => {
 
 
   })
+
+
+
+  it("Get Questions using Question ID",done=>{
+    chai.request('http://localhost:4000/api')
+
+      .get(`/get-question/${test_question_id}`)
+      .end((err,res)=>{
+          assert.equal(res.status,"200");
+          assert.equal(res.body[0]._id,test_question_id);
+          done();
+      });
+
+
+})
+
+
 
 
 });

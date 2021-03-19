@@ -83,6 +83,7 @@ exports.getQuestionsById = (req,res) => {
     Question.find({_id:question_id},function(err,data){
         if(data){
             res.send(data)
+            res.status(200);
         }
         else{
             res.status(400).send('No questions with the given id');
