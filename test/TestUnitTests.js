@@ -5,7 +5,7 @@ let chaiHttp = require('chai-http');
 
 chai.should();
 chai.use(chaiHttp);
-
+var assert = chai.assert;
 var expect = require('chai').expect;
 
 chai.use(chaiHttp);
@@ -187,41 +187,43 @@ describe("Test Tasks API",  ()=> {
             
     // })
     // /remove-question-from-test/:testid/:questionid
-    describe("POST /api/remove-question-from-test/:testid/:questionid", ()=> {
-        // it("It should remove questions to specific testid", (done)=> {
-        //     const testid = "6054564c3274487449edcb8f"
-        //     const questionid =  "603ccefdeeca6ba438a254d6"
-        //     chai.request('http://localhost:4000/api')
-        //         .post(`/remove-question-from-test/${testid}/${questionid}`)
-        //         .end((err,res)=>{
-        //             //console.log('saved test unit')
-        //             expect(res.status).to.equal(200)
+    // describe("POST /api/remove-question-from-test/:testid/:questionid", ()=> {
+    //     it("It should remove questions to specific testid", (done)=> {
+    //         const testid = "6054564c3274487449edcb8f"
+    //         const questionid =  "603ccefdeeca6ba438a254d6"
+    //         chai.request('http://localhost:4000/api')
+    //             .post(`/remove-question-from-test/${testid}/${questionid}`)
+    //             .end((err,res)=>{
+    //                 //console.log('saved test unit')
+    //                 expect(res.status).to.equal(200)
 
-        //             done();
-        //         })
+    //                 done();
+    //             })
                 
         
             
             
-        // })
-        it("It should not remove questions to specific testid", (done)=> {
-            const testid = "6054564c3274487449edcb8f"
-            const questionid =  ""
-            chai.request('http://localhost:4000/api')
-                .post(`/remove-question-from-test/${testid}/${questionid}`)
-                .end((err,res)=>{
-                    //console.log('saved test unit')
-                    expect(res.status).to.equal(404)
+    //     })
+    //     it("It should not remove questions to specific testid", (done)=> {
+    //         const testid = "6054564c3274487449edcb8f"
+    //         const questionid =  "603ccefdeeca6ba438a254d6"
+    //         chai.request('http://localhost:4000/api')
+    //             .post(`/remove-question-from-test/${testid}/${questionid}`)
+    //             .end((err,res)=>{
+    //                 //console.log('saved test unit')
+    //                 //console.log('body',res.text)
+    //                 assert.equal(res.text, "No entry found with given id")
+    //                 //expect(res.status).to.equal(200)
 
-                    done();
-                })
+    //                 done();
+    //             })
                 
         
             
             
-        })
+    //     })
             
-    })
+    // })
 
 })
 
