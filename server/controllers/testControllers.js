@@ -114,9 +114,15 @@ exports.removeQuestion = (req,res) =>{
     TestSchema.findOne({_id:req.params.testid},function(err,data){
       if(data){
         let question_id_array = data.Question_List
+        let l1 = question_id_array.length
         question_id_array = question_id_array.filter(function(val,index,arr){
           return val!=req.params.questionid
         })
+        let l2 = question_id_array.length
+        if(l1==l2){
+          res.send("No entry found with given id")
+        }
+        else{
         TestSchema.findOneAndUpdate({_id:req.params.testid},{Question_List:question_id_array},
           (err,data)=>{
               if(err){
@@ -129,6 +135,7 @@ exports.removeQuestion = (req,res) =>{
               }
           }
           )
+        }
       }
       else{
         console.log(err)

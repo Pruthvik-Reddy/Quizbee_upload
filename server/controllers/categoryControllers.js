@@ -10,7 +10,7 @@ exports.createCategory = (req,res) => {
         });
         newCategory.save()
         .then(newCategory => {
-            res.status(200).json({'newCategory': 'added successfully'});
+            res.status(200).send(newCategory);
         })
         .catch(err => {
             res.status(400).send('Failed to add');
@@ -29,7 +29,7 @@ exports.createCategory = (req,res) => {
                 });
                 newCategory.save()
                 .then(newCategory => {
-                res.status(200).json({'newCategory': 'new Category added successfully'});
+                res.status(200).send(newCategory);
                 })
             
                 .catch(err => {
