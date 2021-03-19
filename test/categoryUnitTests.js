@@ -24,14 +24,14 @@ describe("POST /add-category", () => {
        
 	})
 
-    it("deleting the entry",()=>{
-        Category.deleteMany({category_name:"General Knowledge"})
-        .then(function(){ 
-            console.log("Data deleted"); // Success 
-        }).catch(function(error){ 
-            console.log(error); // Failure 
-        });
-    })
+    // it("deleting the entry",()=>{
+    //     Category.deleteMany({category_name:"General Knowledge"})
+    //     .then(function(){ 
+    //         console.log("Data deleted"); // Success 
+    //     }).catch(function(error){ 
+    //         console.log(error); // Failure 
+    //     });
+    // })
 
 	
     // afterEach(async () => {

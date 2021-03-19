@@ -121,8 +121,10 @@ exports.removeQuestion = (req,res) =>{
           (err,data)=>{
               if(err){
                 console.log(err)
+                res.status(404).send("already deleted")
               }
               else{
+                console.log('deleted successfully')
                 res.status(200).send('Updated Successfully');
               }
           }
