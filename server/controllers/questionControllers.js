@@ -67,7 +67,11 @@ exports.getQuestionsInACategory = (req,res) =>{
  
     Question.find({category_id_array:categoryname},function(err,data){
         if(data){
-            res.send(data)
+            res.send(data);
+            res.status(200)
+            
+
+            
         }
         else{
             res.status(400).send('No questions found');
