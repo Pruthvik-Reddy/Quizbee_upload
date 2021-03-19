@@ -19,6 +19,7 @@ exports.createTestSummary = (req, res) => {
         res.status(200).send(data)
     })
     .catch(()=>{
+        // res.status
         res.status(400).send("Failed to save summary")
         // console.log('not saved')
     })
