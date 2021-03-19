@@ -28,6 +28,7 @@ import {
 import routes from '../js/routes';
 import store from '../js/store';
 
+export const UserContext = React.createContext();
 
 const MyApp = () => {
   // Login screen demo data
@@ -56,6 +57,7 @@ const MyApp = () => {
   });
 
   return (
+    <UserContext.Provider value={'Karthik'}>
     <App { ...f7params } >
         {/* Left panel with cover effect*/}
         <Panel left cover themeDark>
@@ -123,6 +125,7 @@ const MyApp = () => {
         </View>
       </LoginScreen>
     </App>
+    </UserContext.Provider>
   )
 }
 export default MyApp;

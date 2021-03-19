@@ -13,6 +13,7 @@ import EditTest from '../pages/edittest';
 import StudentTest from '../pages/studenttest';
 import CreatedTest from '../pages/select';
 import Display from '../pages/Display_questions';
+import Context from '../pages/contextfile';
  
 import {BrowserRouter as Router,Switch, Route} from "react-router-dom";
 import CreateUser from "./create-user.component";
@@ -62,6 +63,8 @@ export default class MainContainer extends React.Component {
                         <Route path= "/questions-in-test" component={Display}/>
                         <Route path= "/test-result" component={TestResult}/>
                         <Route path="/test-summary" component={Test_Summary} />
+                        {/* ..........usecontext testcase.......... */}
+                        <Route path="/context" component={Context} />
                        
                     </Switch>
                 </Router>
